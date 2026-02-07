@@ -1,0 +1,2949 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Calibra</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <style>
+        /* STYLE REMAIN THE SAME - NOT CHANGED */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            touch-action: manipulation;
+        }
+        
+        html {
+            font-size: 14px;
+            -webkit-text-size-adjust: 100%;
+            -moz-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+        
+        body {
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.4;
+            padding: 8px;
+            font-size: 1rem;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+            min-height: calc(100vh - 16px);
+        }
+        
+        header {
+            background: white;
+            color: #2c3e50;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #eef2f7;
+            flex-wrap: wrap;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #4a90e2 0%, #357ae8 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);
+        }
+        
+        .logo-icon {
+            width: 24px;
+            height: 24px;
+            position: relative;
+        }
+        
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border: 3px solid white;
+            border-radius: 50%;
+            top: 0;
+            left: 0;
+        }
+        
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            bottom: 2px;
+            right: 2px;
+            box-shadow: 0 0 0 2px #4a90e2;
+        }
+        
+        .app-name {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #2c3e50;
+            letter-spacing: -0.5px;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        .app-name span {
+            background: linear-gradient(135deg, #4a90e2 0%, #357ae8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .last-updated-bar {
+            background: #f8f9fa;
+            color: #6c757d;
+            padding: 8px 16px;
+            font-size: 0.75rem;
+            border-bottom: 1px solid #eef2f7;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        
+        #last-updated-time {
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+        
+        .logout-btn {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            color: #495057;
+            cursor: pointer;
+            font-size: 0.8rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        
+        .logout-btn:hover, .logout-btn:active {
+            background: #e9ecef;
+            border-color: #adb5bd;
+        }
+        
+        .btn {
+            background: white;
+            color: #4a90e2;
+            border: 2px solid #4a90e2;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            width: 100%;
+            margin: 4px 0;
+            font-weight: 600;
+            transition: all 0.2s;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        .btn:hover, .btn:active {
+            background: #f0f8ff;
+            transform: translateY(-1px);
+        }
+        
+        .btn-danger {
+            color: #dc3545;
+            border-color: #dc3545;
+        }
+        
+        .btn-danger:hover, .btn-danger:active {
+            background: #fff5f5;
+        }
+        
+        .btn-success {
+            color: #28a745;
+            border-color: #28a745;
+        }
+        
+        .btn-success:hover, .btn-success:active {
+            background: #f0fff4;
+        }
+        
+        .btn-secondary {
+            color: #6c757d;
+            border-color: #6c757d;
+        }
+        
+        .btn-secondary:hover, .btn-secondary:active {
+            background: #f8f9fa;
+        }
+        
+        .form-group {
+            margin-bottom: 12px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 500;
+            color: #2c3e50;
+            font-size: 0.85rem;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e1e5eb;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            background: white;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+        
+        .search-box {
+            margin-bottom: 10px;
+            position: sticky;
+            top: 4px;
+            z-index: 100;
+        }
+        
+        .search-box input {
+            border-radius: 20px;
+            padding: 12px 16px;
+            font-size: 0.95rem;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e1e5eb;
+        }
+        
+        .equipment-item {
+            background: white;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+            border-left: 4px solid #4a90e2;
+            position: relative;
+            transition: all 0.2s;
+            min-height: 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            cursor: pointer;
+            -webkit-user-select: none;
+            user-select: none;
+            border: 1px solid #eef2f7;
+        }
+        
+        .equipment-item:active {
+            transform: scale(0.98);
+        }
+        
+        .equipment-item.warning {
+            border-left-color: #ffc107;
+            border-color: #ffeaa7;
+        }
+        
+        .equipment-item.danger {
+            border-left-color: #dc3545;
+            border-color: #f8d7da;
+        }
+        
+        .equipment-item.calibration {
+            border-left-color: #6f42c1;
+            border-color: #e2d9f3;
+        }
+        
+        .equipment-item.unused {
+            border-left-color: #6c757d;
+            border-color: #e9ecef;
+        }
+        
+        .equipment-item.lost {
+            border-left-color: #343a40;
+            border-color: #e2e3e5;
+        }
+        
+        .equipment-item.damaged {
+            border-left-color: #495057;
+            border-color: #dee2e6;
+        }
+        
+        .item-number {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.95rem;
+            margin-bottom: 2px;
+            line-height: 1.2;
+        }
+        
+        .item-name {
+            font-weight: 500;
+            color: #495057;
+            font-size: 0.85rem;
+            margin-bottom: 2px;
+            line-height: 1.2;
+        }
+        
+        .item-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-bottom: 2px;
+            line-height: 1.2;
+        }
+        
+        .item-detail {
+            background: #f8fafc;
+            padding: 2px 8px;
+            border-radius: 4px;
+            line-height: 1.3;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid #eef2f7;
+        }
+        
+        .item-detail:hover, .item-detail:active {
+            background: #eef2f7;
+            transform: translateY(-1px);
+        }
+        
+        .item-status {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: white;
+            min-width: 32px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .item-status:hover, .item-status:active {
+            transform: scale(1.1);
+        }
+        
+        .status-days {
+            background: linear-gradient(135deg, #4a90e2 0%, #357ae8 100%);
+        }
+        
+        .status-days.warning {
+            background: linear-gradient(135deg, #ffc107 0%, #ffa000 100%);
+        }
+        
+        .status-days.danger {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        }
+        
+        .status-text {
+            background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+        }
+        
+        .status-text.calibration {
+            background: linear-gradient(135deg, #6f42c1 0%, #5a32a3 100%);
+        }
+        
+        .status-text.unused {
+            background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+        }
+        
+        .status-text.lost {
+            background: linear-gradient(135deg, #343a40 0%, #23272b 100%);
+        }
+        
+        .status-text.damaged {
+            background: linear-gradient(135deg, #495057 0%, #343a40 100%);
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .status-message {
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 16px;
+            text-align: center;
+            display: none;
+            font-size: 0.9rem;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .filters-container {
+            display: flex;
+            gap: 8px;
+            margin: 10px 16px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .filter-select {
+            flex: 1;
+            min-width: 120px;
+            padding: 10px;
+            font-size: 0.85rem;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background: white;
+            border: 1px solid #e1e5eb;
+            border-radius: 8px;
+        }
+        
+        .action-bar {
+            display: flex;
+            gap: 8px;
+            margin: 10px 16px;
+        }
+        
+        .action-bar .btn {
+            flex: 1;
+            padding: 12px;
+            font-size: 0.85rem;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6c757d;
+            font-size: 0.85rem;
+        }
+        
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 10px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .modal-header {
+            padding: 16px;
+            border-bottom: 1px solid #eef2f7;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: white;
+            border-radius: 16px 16px 0 0;
+            z-index: 1;
+        }
+        
+        .modal-body {
+            padding: 16px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        
+        .modal-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        
+        .modal-actions-top {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .modal-actions-top .btn {
+            flex: 1;
+            min-width: 120px;
+            padding: 10px 12px;
+            font-size: 0.85rem;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #6c757d;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        .close-modal:hover, .close-modal:active {
+            background: #f8f9fa;
+        }
+        
+        /* NOWE STYLE DLA KOMPAKTOWEGO WIDOKU SZCZEGÓŁÓW */
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #eef2f7;
+        }
+        
+        .detail-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #6c757d;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .detail-value {
+            font-size: 0.9rem;
+            color: #2c3e50;
+            font-weight: 500;
+            line-height: 1.3;
+            word-break: break-word;
+        }
+        
+        .detail-value.clickable {
+            color: #4a90e2;
+            cursor: pointer;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            text-underline-offset: 2px;
+        }
+        
+        .image-preview-container {
+            text-align: center;
+            margin: 0 auto 16px;
+            max-width: 200px;
+        }
+        
+        .image-preview {
+            max-width: 100%;
+            max-height: 150px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+        
+        /* NOWE STYLE DKOMPAKTOWEGO FORMULARZA */
+        .compact-form .form-group {
+            margin-bottom: 10px;
+        }
+        
+        .compact-form label {
+            font-size: 0.8rem;
+            margin-bottom: 3px;
+        }
+        
+        .compact-form input, 
+        .compact-form select, 
+        .compact-form textarea {
+            padding: 8px 10px;
+            font-size: 0.9rem;
+            border-radius: 6px;
+        }
+        
+        .compact-form .form-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .compact-form .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        
+        .compact-form .thumbnail-controls {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+        
+        .compact-form .thumbnail-controls .btn {
+            flex: 1;
+            padding: 8px 6px;
+            font-size: 0.8rem;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        
+        .modal-actions .btn {
+            flex: 1;
+            padding: 10px;
+        }
+        
+        #excel-input {
+            display: none;
+        }
+        
+        #image-input {
+            display: none;
+        }
+        
+        .fab {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4a90e2 0%, #357ae8 100%);
+            color: white;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+            z-index: 100;
+            transition: all 0.2s;
+            -webkit-user-select: none;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .fab:hover, .fab:active {
+            background: linear-gradient(135deg, #357ae8 0%, #2768d4 100%);
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.5);
+        }
+        
+        .thumbnail-container {
+            position: absolute;
+            left: 12px;
+            top: 12px;
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #f8f9fa;
+            border: 1px solid #eef2f7;
+        }
+        
+        .item-with-thumbnail {
+            padding-left: 64px !important;
+        }
+        
+        .thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .thumbnail-placeholder {
+            display: none;
+        }
+        
+        .thumbnail-upload {
+            margin-top: 12px;
+            padding: 12px;
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #f8f9fa;
+        }
+        
+        .thumbnail-upload:hover, .thumbnail-upload:active {
+            background: #e9ecef;
+            border-color: #4a90e2;
+        }
+        
+        .thumbnail-preview {
+            width: 100%;
+            max-height: 150px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        /* Kamera */
+        .camera-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: black;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .camera-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        .camera-controls {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            z-index: 10;
+        }
+        
+        .camera-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        .camera-capture {
+            background: white;
+            color: #333;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        .camera-capture:active {
+            transform: scale(0.9);
+        }
+        
+        .camera-close {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            backdrop-filter: blur(5px);
+        }
+        
+        .camera-flash {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.1s;
+        }
+        
+        .flash-animation {
+            animation: flash 0.3s;
+        }
+        
+        @keyframes flash {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        
+        .camera-top-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);
+            z-index: 10;
+        }
+        
+        .camera-switch {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+        }
+        
+        /* Ekran logowania */
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #4a90e2 0%, #357ae8 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            padding: 20px;
+        }
+        
+        .login-box {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        
+        .login-logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #4a90e2 0%, #357ae8 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+        }
+        
+        .login-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        
+        .login-subtitle {
+            color: #6c757d;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+        }
+        
+        .login-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin-bottom: 16px;
+            transition: all 0.2s;
+        }
+        
+        .login-input:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+        
+        .login-btn {
+            background: linear-gradient(135deg, #4a90e2 0%, #357ae8 100%);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 10px;
+        }
+        
+        .login-btn:hover, .login-btn:active {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(74, 144, 226, 0.3);
+        }
+        
+        .login-error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        @media (max-width: 480px) {
+            html {
+                font-size: 13px;
+            }
+            
+            body {
+                padding: 4px;
+                background: white;
+            }
+            
+            .container {
+                border-radius: 12px;
+                box-shadow: none;
+                min-height: calc(100vh - 8px);
+            }
+            
+            header {
+                padding: 12px;
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .logo {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .app-name {
+                font-size: 1.4rem;
+            }
+            
+            .modal-overlay {
+                padding: 5px;
+            }
+            
+            .modal-content {
+                max-height: 95vh;
+            }
+            
+            .modal-body {
+                max-height: 75vh;
+                padding: 12px;
+            }
+            
+            .modal-header {
+                padding: 12px;
+            }
+            
+            .modal-title {
+                font-size: 1rem;
+            }
+            
+            .equipment-item {
+                padding: 10px;
+                margin-bottom: 5px;
+                min-height: 65px;
+            }
+            
+            .item-number {
+                font-size: 0.9rem;
+            }
+            
+            .item-name {
+                font-size: 0.8rem;
+            }
+            
+            .item-details {
+                font-size: 0.7rem;
+                gap: 4px;
+            }
+            
+            .item-status {
+                top: 10px;
+                right: 10px;
+                font-size: 0.65rem;
+                min-width: 30px;
+            }
+            
+            .fab {
+                bottom: 20px;
+                right: 20px;
+                width: 56px;
+                height: 56px;
+                font-size: 1.6rem;
+            }
+            
+            .search-box {
+                top: 2px;
+            }
+            
+            .detail-item {
+                padding: 8px;
+            }
+            
+            .detail-label {
+                font-size: 0.7rem;
+            }
+            
+            .detail-value {
+                font-size: 0.85rem;
+            }
+            
+            .filters-container {
+                margin: 8px 12px;
+                gap: 6px;
+            }
+            
+            .filter-select {
+                min-width: 110px;
+                padding: 8px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .action-bar {
+                margin: 8px 12px;
+                flex-wrap: wrap;
+            }
+            
+            .action-bar .btn {
+                flex: 1 1 calc(33.333% - 5px);
+                min-width: 0;
+                padding: 10px 6px;
+                font-size: 0.8rem;
+            }
+            
+            .modal-actions-top {
+                flex-direction: row;
+                gap: 6px;
+            }
+            
+            .modal-actions-top .btn {
+                min-width: 100px;
+                padding: 8px 10px;
+                font-size: 0.8rem;
+            }
+            
+            .main-content {
+                padding: 0 12px 12px;
+            }
+            
+            .status-message {
+                margin: 8px 12px;
+            }
+            
+            .thumbnail-container {
+                width: 36px;
+                height: 36px;
+                left: 10px;
+                top: 10px;
+            }
+            
+            .item-with-thumbnail {
+                padding-left: 56px !important;
+            }
+            
+            .camera-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.3rem;
+            }
+            
+            .camera-controls {
+                bottom: 20px;
+                gap: 15px;
+            }
+            
+            .login-box {
+                padding: 20px;
+            }
+            
+            .user-info {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            
+            #current-user {
+                font-size: 0.8rem;
+                white-space: nowrap;
+            }
+            
+            .logout-btn {
+                padding: 4px 8px;
+                font-size: 0.75rem;
+            }
+            
+            .last-updated-bar {
+                padding: 6px 12px;
+                font-size: 0.7rem;
+            }
+            
+            /* Kompaktowy formularz na telefonach */
+            .compact-form .form-group {
+                margin-bottom: 8px;
+            }
+            
+            .compact-form label {
+                font-size: 0.75rem;
+            }
+            
+            .compact-form input, 
+            .compact-form select, 
+            .compact-form textarea {
+                padding: 7px 9px;
+                font-size: 0.85rem;
+            }
+            
+            .compact-form .form-row {
+                flex-direction: column;
+                gap: 8px;
+                margin-bottom: 8px;
+            }
+            
+            .compact-form .thumbnail-controls {
+                flex-direction: column;
+                gap: 6px;
+            }
+        }
+        
+        @media (max-width: 320px) {
+            .user-info {
+                flex-direction: column;
+                gap: 6px;
+            }
+            
+            .logout-btn {
+                padding: 3px 6px;
+                font-size: 0.7rem;
+            }
+            
+            .action-bar .btn {
+                flex: 1 1 calc(50% - 4px);
+            }
+            
+            .modal-actions-top .btn {
+                min-width: 90px;
+                font-size: 0.75rem;
+            }
+            
+            .modal-title {
+                font-size: 0.95rem;
+            }
+        }
+        
+        /* Obsługa zoomu dwoma palcami */
+        body.zooming {
+            touch-action: pan-x pan-y;
+        }
+        
+        /* Dla bardzo małych ekranów */
+        @media (max-height: 600px) {
+            .equipment-item {
+                padding: 8px;
+                min-height: 60px;
+            }
+            
+            .modal-content {
+                max-height: 85vh;
+            }
+            
+            .modal-body {
+                max-height: 65vh;
+            }
+            
+            .camera-controls {
+                bottom: 15px;
+            }
+            
+            .detail-item {
+                padding: 6px;
+            }
+        }
+        
+        /* Ekrany o małej wysokości - bardziej kompaktowe */
+        @media (max-height: 500px) {
+            .modal-body {
+                max-height: 60vh;
+                padding: 10px;
+            }
+            
+            .modal-header {
+                padding: 10px;
+            }
+            
+            .detail-grid {
+                gap: 6px;
+            }
+            
+            .detail-item {
+                padding: 5px;
+            }
+            
+            .detail-label {
+                font-size: 0.65rem;
+            }
+            
+            .detail-value {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Ekran logowania -->
+    <div id="login-screen" class="login-screen">
+        <div class="login-box">
+            <div class="login-logo">
+                <div class="logo-icon" style="transform: scale(1.5);"></div>
+            </div>
+            <div class="login-title">Calibra</div>
+            <div class="login-subtitle">System zarządzania sprzętem</div>
+            
+            <input type="text" id="login-username" class="login-input" placeholder="Nazwa użytkownika" autocomplete="username">
+            <input type="password" id="login-password" class="login-input" placeholder="Hasło" autocomplete="current-password">
+            
+            <button class="login-btn" id="login-button">Zaloguj się</button>
+            
+            <div id="login-error" class="login-error"></div>
+            
+            <div style="margin-top: 20px; font-size: 0.8rem; color: #6c757d;">
+                Skontaktuj się z administratorem aby otrzymać dostęp
+            </div>
+        </div>
+    </div>
+
+    <!-- Główna aplikacja -->
+    <div id="app-container" class="container hidden">
+        <header>
+            <div class="logo-container">
+                <div class="logo">
+                    <div class="logo-icon"></div>
+                </div>
+                <div class="app-name"><span>Calibra</span></div>
+            </div>
+            
+            <div class="user-info">
+                <span id="current-user"></span>
+                <button class="logout-btn" id="logout-button" onclick="logout()">Wyloguj</button>
+            </div>
+        </header>
+        
+        <div id="last-updated" class="last-updated-bar">
+            Ostatnia aktualizacja: <span id="last-updated-time">-</span>
+        </div>
+        
+        <div id="status-message" class="status-message"></div>
+        
+        <div class="action-bar">
+            <button class="btn" id="export-excel">Eksportuj</button>
+            <button class="btn" id="import-excel">Importuj</button>
+            <button class="btn btn-danger" id="clear-all">Wyczyść</button>
+        </div>
+        
+        <input type="file" id="excel-input" accept=".xlsx, .xls, .csv">
+        <input type="file" id="image-input" accept="image/*" capture="environment">
+        
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="Szukaj...">
+        </div>
+        
+        <div class="filters-container">
+            <select id="filter-location" class="filter-select">
+                <option value="">Wszystkie lokalizacje</option>
+            </select>
+            <select id="filter-status" class="filter-select">
+                <option value="">Wszystkie statusy</option>
+                <option value="active">Aktywny</option>
+                <option value="calibration">W kalibracji</option>
+                <option value="unused">Nieużywany</option>
+                <option value="lost">Zagubiony</option>
+                <option value="damaged">Uszkodzony</option>
+            </select>
+        </div>
+        
+        <div class="main-content">
+            <div id="equipment-list">
+                <!-- Lista będzie generowana dynamicznie -->
+            </div>
+        </div>
+        
+        <div id="modal-container">
+            <!-- Modal będzie generowany dynamicznie -->
+        </div>
+        
+        <!-- Kamera -->
+        <div id="camera-container" class="hidden">
+            <!-- Kamera będzie generowana dynamicznie -->
+        </div>
+        
+        <button class="fab" id="add-equipment">+</button>
+    </div>
+
+    <!-- Biblioteka do obsługi Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <script>
+        // Zmienne globalne
+        let equipmentList = [];
+        let currentEditingId = null;
+        let currentImageFile = null;
+        let cameraStream = null;
+        let useFrontCamera = false;
+        let currentUser = null;
+
+        // Elementy DOM
+        const equipmentListDiv = document.getElementById('equipment-list');
+        const modalContainer = document.getElementById('modal-container');
+        const cameraContainer = document.getElementById('camera-container');
+        const searchInput = document.getElementById('search-input');
+        const statusMessage = document.getElementById('status-message');
+        const excelInput = document.getElementById('excel-input');
+        const imageInput = document.getElementById('image-input');
+        const addEquipmentBtn = document.getElementById('add-equipment');
+        const exportExcelBtn = document.getElementById('export-excel');
+        const importExcelBtn = document.getElementById('import-excel');
+        const clearAllBtn = document.getElementById('clear-all');
+        const filterLocation = document.getElementById('filter-location');
+        const filterStatus = document.getElementById('filter-status');
+        const lastUpdatedTime = document.getElementById('last-updated-time');
+
+        // Elementy logowania
+        const loginScreen = document.getElementById('login-screen');
+        const appContainer = document.getElementById('app-container');
+        const loginButton = document.getElementById('login-button');
+        const logoutButton = document.getElementById('logout-button');
+        const loginUsername = document.getElementById('login-username');
+        const loginPassword = document.getElementById('login-password');
+        const loginError = document.getElementById('login-error');
+        const currentUserSpan = document.getElementById('current-user');
+
+        // Lista uprawnionych użytkowników
+        const authorizedUsers = [
+            { username: "t.ludwiczak", password: "samsung1", name: "t.ludwiczak", role: "admin" },
+            { username: "r.gehrke", password: "samsung2026", name: "r.gehrke", role: "admin" },
+            { username: "user", password: "samsung26", name: "user", role: "viewer" }
+        ];
+
+        // Firebase functions - zostaną ustawione przez moduł Firebase
+        let saveToFirebaseFunc = null;
+        let clearFirebaseFunc = null;
+        let updateLastUpdatedInFirebaseFunc = null;
+
+        // Funkcja do kompresji obrazka do Base64
+        function compressImageToBase64(file, maxWidth, maxHeight, quality) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        
+                        let width = img.width;
+                        let height = img.height;
+                        
+                        // Zachowaj proporcje
+                        if (width > height) {
+                            if (width > maxWidth) {
+                                height = Math.round((height * maxWidth) / width);
+                                width = maxWidth;
+                            }
+                        } else {
+                            if (height > maxHeight) {
+                                width = Math.round((width * maxHeight) / height);
+                                height = maxHeight;
+                            }
+                        }
+                        
+                        canvas.width = width;
+                        canvas.height = height;
+                        ctx.drawImage(img, 0, 0, width, height);
+                        
+                        const base64 = canvas.toDataURL('image/jpeg', quality);
+                        console.log(`Obrazek skompresowany: ${width}x${height}, rozmiar: ${Math.round(base64.length / 1024)}KB`);
+                        resolve(base64);
+                    };
+                    img.onerror = reject;
+                    img.src = e.target.result;
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Sprawdzenie uprawnień
+        function checkPermission() {
+            if (!currentUser) return false;
+            if (currentUser.role === 'viewer') {
+                showStatus('Brak uprawnień do wykonania tej operacji', 'error');
+                return false;
+            }
+            return true;
+        }
+
+        // Inicjalizacja aplikacji
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM załadowany");
+            // Sprawdź czy użytkownik jest już zalogowany (z localStorage)
+            const savedUser = localStorage.getItem('calibra_user');
+            if (savedUser) {
+                try {
+                    const user = JSON.parse(savedUser);
+                    console.log("Znaleziono zapisanego użytkownika:", user.name);
+                    loginUser(user);
+                } catch (e) {
+                    console.error("Błąd parsowania zapisanego użytkownika:", e);
+                    localStorage.removeItem('calibra_user');
+                }
+            } else {
+                console.log("Brak zapisanego użytkownika");
+            }
+            
+            setupEventListeners();
+            
+            // Ustawienie obsługi zoomu dwoma palcami
+            setupPinchZoom();
+        });
+
+        // Logowanie użytkownika
+        function loginUser(user) {
+            console.log("Logowanie użytkownika:", user.name);
+            currentUser = user;
+            currentUserSpan.textContent = `Witaj, ${user.name}`;
+            loginScreen.classList.add('hidden');
+            appContainer.classList.remove('hidden');
+            
+            // Zapisz w localStorage
+            localStorage.setItem('calibra_user', JSON.stringify(user));
+            
+            // Ukryj przyciski dla użytkownika z rolą viewer
+            if (user.role === 'viewer') {
+                document.getElementById('export-excel').style.display = 'none';
+                document.getElementById('import-excel').style.display = 'none';
+                document.getElementById('clear-all').style.display = 'none';
+                document.getElementById('add-equipment').style.display = 'none';
+            } else {
+                document.getElementById('export-excel').style.display = 'block';
+                document.getElementById('import-excel').style.display = 'block';
+                document.getElementById('clear-all').style.display = 'block';
+                document.getElementById('add-equipment').style.display = 'block';
+            }
+        }
+
+        // Wylogowanie
+        function logout() {
+            if (confirm('Czy na pewno chcesz się wylogować?')) {
+                currentUser = null;
+                localStorage.removeItem('calibra_user');
+                loginScreen.classList.remove('hidden');
+                appContainer.classList.add('hidden');
+                loginUsername.value = '';
+                loginPassword.value = '';
+                loginError.style.display = 'none';
+            }
+        }
+
+        // Ustawienie nasłuchiwaczy zdarzeń
+        function setupEventListeners() {
+            console.log("Ustawianie event listenerów");
+            // Logowanie
+            loginButton.addEventListener('click', function() {
+                const username = loginUsername.value.trim();
+                const password = loginPassword.value.trim();
+                
+                if (!username || !password) {
+                    loginError.textContent = 'Wpisz nazwę użytkownika i hasło';
+                    loginError.style.display = 'block';
+                    return;
+                }
+                
+                // Sprawdź czy użytkownik jest na liście
+                const user = authorizedUsers.find(u => 
+                    u.username === username && u.password === password
+                );
+                
+                if (user) {
+                    loginUser(user);
+                } else {
+                    loginError.textContent = 'Nieprawidłowa nazwa użytkownika lub hasło';
+                    loginError.style.display = 'block';
+                }
+            });
+            
+            // Logowanie po naciśnięciu Enter
+            loginPassword.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    loginButton.click();
+                }
+            });
+            
+            // Reszta event listenerów tylko jeśli zalogowany
+            addEquipmentBtn.addEventListener('click', showAddEquipmentForm);
+            
+            exportExcelBtn.addEventListener('click', exportToExcel);
+            importExcelBtn.addEventListener('click', importFromExcel);
+            clearAllBtn.addEventListener('click', clearAllData);
+            excelInput.addEventListener('change', handleExcelImport);
+            
+            searchInput.addEventListener('input', renderEquipmentList);
+            filterLocation.addEventListener('change', renderEquipmentList);
+            filterStatus.addEventListener('change', renderEquipmentList);
+            
+            // Obsługa przesyłania obrazków
+            imageInput.addEventListener('change', handleImageUpload);
+        }
+
+        // Obsługa zoomu dwoma palcami
+        function setupPinchZoom() {
+            let initialDistance = 0;
+            let currentFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
+            
+            document.addEventListener('touchstart', function(e) {
+                if (e.touches.length === 2) {
+                    initialDistance = Math.hypot(
+                        e.touches[0].clientX - e.touches[1].clientX,
+                        e.touches[0].clientY - e.touches[1].clientY
+                    );
+                    document.body.classList.add('zooming');
+                }
+            });
+            
+            document.addEventListener('touchmove', function(e) {
+                if (e.touches.length === 2 && initialDistance > 0) {
+                    e.preventDefault();
+                    
+                    const currentDistance = Math.hypot(
+                        e.touches[0].clientX - e.touches[1].clientX,
+                        e.touches[0].clientY - e.touches[1].clientY
+                    );
+                    
+                    const scale = currentDistance / initialDistance;
+                    const newFontSize = Math.max(12, Math.min(24, currentFontSize * scale));
+                    
+                    document.documentElement.style.fontSize = newFontSize + 'px';
+                }
+            });
+            
+            document.addEventListener('touchend', function(e) {
+                if (e.touches.length < 2) {
+                    initialDistance = 0;
+                    currentFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
+                    document.body.classList.remove('zooming');
+                }
+            });
+            
+            // Reset zoom przy dwukrotnym kliknięciu
+            document.addEventListener('dblclick', function(e) {
+                if (e.target === document.body || e.target.classList.contains('container')) {
+                    document.documentElement.style.fontSize = '';
+                }
+            });
+        }
+
+        // Czyszczenie wszystkich danych
+        function clearAllData() {
+            if (!checkPermission()) return;
+            
+            if (equipmentList.length === 0) {
+                showStatus('Brak danych do usunięcia', 'error');
+                return;
+            }
+
+            if (confirm('Czy na pewno chcesz usunąć WSZYSTKIE dane? Tej operacji nie można cofnąć!')) {
+                // Usuń dane z Firebase
+                if (clearFirebaseFunc) {
+                    clearFirebaseFunc();
+                } else {
+                    console.error("clearFirebaseFunc nie jest dostępna!");
+                    showStatus('Błąd: funkcja Firebase nie jest dostępna', 'error');
+                }
+            }
+        }
+
+        // Eksport do Excel
+        function exportToExcel() {
+            if (!checkPermission()) return;
+            
+            if (equipmentList.length === 0) {
+                showStatus('Brak danych do eksportu', 'error');
+                return;
+            }
+
+            try {
+                // Przygotowanie danych do eksportu
+                const exportData = equipmentList.map(item => {
+                    return {
+                        'Numer ewidencyjny': item.inventoryNumber,
+                        'Nazwa sprzętu': item.equipmentName,
+                        'Producent': item.manufacturer,
+                        'Model': item.model,
+                        'Numer seryjny': item.serialNumber,
+                        'Grade': item.grade || 'A',
+                        'Data kalibracji': item.calibrationDate,
+                        'Ważność kalibracji': item.calibrationValidity,
+                        'Dni do wygaśnięcia': item.daysToExpiry,
+                        'Lokalizacja': item.location,
+                        'Status': getStatusText(item.status),
+                        'Miniaturka': item.imageUrl ? 'TAK' : 'NIE',
+                        'Uwagi': item.notes || ''
+                    };
+                });
+
+                // Tworzenie arkusza
+                const ws = XLSX.utils.json_to_sheet(exportData);
+                
+                // Ustawienie właściwości komórek z datami
+                const range = XLSX.utils.decode_range(ws['!ref']);
+                const dateColumns = [6, 7];
+                
+                for (let R = range.s.r + 1; R <= range.e.r; ++R) {
+                    dateColumns.forEach(col => {
+                        const cellAddress = XLSX.utils.encode_cell({r: R, c: col});
+                        if (ws[cellAddress]) {
+                            const dateStr = ws[cellAddress].v;
+                            if (dateStr && typeof dateStr === 'string' && dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                                const parts = dateStr.split('-');
+                                const year = parseInt(parts[0]);
+                                const month = parseInt(parts[1]) - 1;
+                                const day = parseInt(parts[2]);
+                                const date = new Date(year, month, day, 12, 0, 0);
+                                
+                                ws[cellAddress].v = date;
+                                ws[cellAddress].t = 'd';
+                                ws[cellAddress].z = 'dd"."mm"."yyyy';
+                                ws[cellAddress].w = formatDateToDDMMYYYY(dateStr);
+                            }
+                        }
+                    });
+                }
+                
+                // Szerokości kolumn
+                const colWidths = [
+                    {wch: 18}, {wch: 25}, {wch: 15}, {wch: 15}, {wch: 15},
+                    {wch: 10}, {wch: 15}, {wch: 15}, {wch: 12}, {wch: 15},
+                    {wch: 12}, {wch: 12}, {wch: 25}
+                ];
+                ws['!cols'] = colWidths;
+                
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, 'Sprzęt');
+
+                // Eksport do pliku
+                const today = new Date();
+                const dateStr = today.toISOString().split('T')[0];
+                XLSX.writeFile(wb, `calibra_export_${dateStr}.xlsx`);
+                
+                showStatus('Dane wyeksportowane', 'success');
+            } catch (error) {
+                console.error('Błąd eksportu:', error);
+                showStatus('Błąd podczas eksportu danych', 'error');
+            }
+        }
+
+        // Formatowanie daty do DD.MM.YYYY
+        function formatDateToDDMMYYYY(dateString) {
+            if (!dateString) return '';
+            
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) {
+                if (dateString.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                    const parts = dateString.split('-');
+                    return `${parts[2]}.${parts[1]}.${parts[0]}`;
+                }
+                return dateString;
+            }
+            
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}.${month}.${year}`;
+        }
+
+        // Import z Excel
+        function importFromExcel() {
+            if (!checkPermission()) return;
+            
+            excelInput.click();
+        }
+
+        // Otwarcie kamery
+        function openCamera() {
+            if (!checkPermission()) return;
+            
+            cameraContainer.innerHTML = `
+                <div class="camera-modal">
+                    <div class="camera-flash" id="camera-flash"></div>
+                    <video class="camera-preview" id="camera-preview" autoplay playsinline></video>
+                    <div class="camera-top-bar">
+                        <button class="camera-close camera-btn" onclick="closeCamera()">✕</button>
+                        <button class="camera-switch" onclick="switchCamera()">🔄</button>
+                    </div>
+                    <div class="camera-controls">
+                        <button class="camera-capture camera-btn" onclick="capturePhoto()">📸</button>
+                    </div>
+                </div>
+            `;
+            
+            cameraContainer.classList.remove('hidden');
+            
+            // Uruchom kamerę
+            startCamera();
+        }
+
+        // Uruchomienie kamery
+        async function startCamera() {
+            try {
+                // Zatrzymaj poprzedni strumień jeśli istnieje
+                if (cameraStream) {
+                    cameraStream.getTracks().forEach(track => track.stop());
+                }
+                
+                // Ustawienia kamery
+                const constraints = {
+                    video: {
+                        facingMode: useFrontCamera ? "user" : "environment",
+                        width: { ideal: 1920 },
+                        height: { ideal: 1080 }
+                    },
+                    audio: false
+                };
+                
+                // Uzyskaj dostęp do kamery
+                cameraStream = await navigator.mediaDevices.getUserMedia(constraints);
+                
+                // Podłącz strumień do elementu video
+                const cameraPreview = document.getElementById('camera-preview');
+                cameraPreview.srcObject = cameraStream;
+                
+            } catch (error) {
+                console.error('Błąd kamery:', error);
+                showStatus('Nie można uzyskać dostępu do kamery', 'error');
+                closeCamera();
+            }
+        }
+
+        // Zamknięcie kamery
+        function closeCamera() {
+            // Zatrzymaj strumień kamery
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(track => track.stop());
+                cameraStream = null;
+            }
+            
+            // Ukryj kontener kamery
+            cameraContainer.classList.add('hidden');
+            cameraContainer.innerHTML = '';
+        }
+
+        // Przełączanie między kamerami
+        function switchCamera() {
+            useFrontCamera = !useFrontCamera;
+            startCamera();
+        }
+
+        // Zrobienie zdjęcia
+        function capturePhoto() {
+            const cameraPreview = document.getElementById('camera-preview');
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            
+            // Ustaw rozmiar canvas na rozmiar wideo
+            canvas.width = cameraPreview.videoWidth;
+            canvas.height = cameraPreview.videoHeight;
+            
+            // Narysuj klatkę z wideo na canvas
+            context.drawImage(cameraPreview, 0, 0, canvas.width, canvas.height);
+            
+            // Efekt flesza
+            const flash = document.getElementById('camera-flash');
+            if (flash) {
+                flash.classList.remove('flash-animation');
+                void flash.offsetWidth; // Trigger reflow
+                flash.classList.add('flash-animation');
+            }
+            
+            // Konwertuj canvas na plik (blob)
+            canvas.toBlob(function(blob) {
+                // Utwórz plik z blob
+                const fileName = `photo_${Date.now()}.jpg`;
+                currentImageFile = new File([blob], fileName, { type: 'image/jpeg' });
+                
+                // Podgląd zdjęcia w formularzu
+                const imagePreview = document.getElementById('image-preview');
+                if (imagePreview) {
+                    const url = URL.createObjectURL(blob);
+                    imagePreview.src = url;
+                    imagePreview.style.display = 'block';
+                }
+                
+                // Zamknij kamerę
+                closeCamera();
+                
+                showStatus('Zdjęcie zrobione', 'success');
+            }, 'image/jpeg', 0.8);
+        }
+
+        // Obsługa przesyłania obrazka z galerii
+        function handleImageUpload(event) {
+            if (!checkPermission()) return;
+            
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            // Sprawdź rozmiar pliku (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                showStatus('Plik jest za duży (max 5MB)', 'error');
+                return;
+            }
+            
+            // Sprawdź typ pliku
+            if (!file.type.match('image.*')) {
+                showStatus('Wybierz plik graficzny', 'error');
+                return;
+            }
+            
+            currentImageFile = file;
+            
+            // Podgląd obrazka
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('image-preview');
+                if (preview) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Obsługa importu z pliku Excel
+        function handleExcelImport(event) {
+            if (!checkPermission()) return;
+            
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { 
+                        type: 'array', 
+                        cellDates: false,
+                        cellText: true,
+                        raw: false
+                    });
+                    
+                    const firstSheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheetName];
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet, { 
+                        raw: false,
+                        defval: ''
+                    });
+                    
+                    if (jsonData.length === 0) {
+                        showStatus('Plik nie zawiera danych', 'error');
+                        return;
+                    }
+
+                    const importedEquipment = jsonData.map(item => {
+                        const inventoryNumber = item['Numer ewidencyjny'] || item['inventoryNumber'] || '';
+                        const equipmentName = item['Nazwa sprzętu'] || item['equipmentName'] || '';
+                        const manufacturer = item['Producent'] || item['manufacturer'] || '';
+                        const model = item['Model'] || item['model'] || '';
+                        const serialNumber = item['Numer seryjny'] || item['serialNumber'] || '';
+                        const grade = item['Grade'] || 'A';
+                        
+                        const calibrationDateRaw = item['Data kalibracji'] || item['calibrationDate'] || '';
+                        const calibrationValidityRaw = item['Ważność kalibracji'] || item['calibrationValidity'] || '';
+                        
+                        let calibrationDate = parseDateFromExcelText(calibrationDateRaw);
+                        let calibrationValidity = parseDateFromExcelText(calibrationValidityRaw);
+                        
+                        const location = item['Lokalizacja'] || item['location'] || '';
+                        const status = parseStatus(item['Status'] || item['status'] || 'active');
+                        const notes = item['Uwagi'] || item['notes'] || '';
+
+                        // Obliczanie dni do wygaśnięcia
+                        let daysToExpiry = 0;
+                        if (calibrationValidity) {
+                            const validityDate = parseDateStringToDate(calibrationValidity);
+                            const today = new Date();
+                            today.setHours(0, 0, 0, 0);
+                            const timeDiff = validityDate.getTime() - today.getTime();
+                            daysToExpiry = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                        }
+
+                        return {
+                            id: 'eq_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+                            inventoryNumber: inventoryNumber.toString(),
+                            equipmentName: equipmentName.toString(),
+                            manufacturer: manufacturer.toString(),
+                            model: model.toString(),
+                            serialNumber: serialNumber.toString(),
+                            grade: grade.toString(),
+                            calibrationDate: calibrationDate,
+                            calibrationValidity: calibrationValidity,
+                            daysToExpiry: daysToExpiry,
+                            notes: notes.toString(),
+                            location: location.toString(),
+                            status: status,
+                            imageUrl: null
+                        };
+                    }).filter(item => item.inventoryNumber && item.equipmentName);
+
+                    if (importedEquipment.length === 0) {
+                        showStatus('Brak poprawnych danych', 'error');
+                        return;
+                    }
+
+                    const importOption = confirm(`Znaleziono ${importedEquipment.length} pozycji. Dodaj do istniejących danych? (OK - dodaj, Anuluj - zastąp)`);
+                    
+                    if (importOption) {
+                        equipmentList = [...equipmentList, ...importedEquipment];
+                    } else {
+                        equipmentList = importedEquipment;
+                    }
+                    
+                    console.log("Po imporcie equipmentList ma:", equipmentList.length, "elementów");
+                    
+                    renderEquipmentList();
+                    updateFilters();
+                    
+                    if (saveToFirebaseFunc) {
+                        saveToFirebaseFunc();
+                        showStatus(`Zaimportowano ${importedEquipment.length} pozycji`, 'success');
+                    } else {
+                        console.error("saveToFirebaseFunc nie jest dostępna!");
+                        showStatus('Błąd: funkcja Firebase nie jest dostępna', 'error');
+                    }
+                    
+                } catch (error) {
+                    console.error('Błąd importu:', error);
+                    showStatus('Błąd podczas importu: ' + error.message, 'error');
+                }
+            };
+            
+            reader.onerror = function() {
+                showStatus('Błąd wczytywania pliku', 'error');
+            };
+            
+            reader.readAsArrayBuffer(file);
+            excelInput.value = '';
+        }
+
+        // Funkcja do parsowania dat z Excela
+        function parseDateFromExcelText(dateValue) {
+            if (!dateValue) return new Date().toISOString().split('T')[0];
+            
+            if (typeof dateValue === 'string' && dateValue.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                return dateValue;
+            }
+            
+            if (dateValue instanceof Date) {
+                const year = dateValue.getFullYear();
+                const month = String(dateValue.getMonth() + 1).padStart(2, '0');
+                const day = String(dateValue.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
+            
+            if (typeof dateValue === 'string') {
+                const cleanValue = dateValue.trim();
+                
+                if (cleanValue.match(/^\d{1,2}\.\d{1,2}\.\d{4}$/)) {
+                    const parts = cleanValue.split('.');
+                    const day = parts[0].padStart(2, '0');
+                    const month = parts[1].padStart(2, '0');
+                    const year = parts[2];
+                    return `${year}-${month}-${day}`;
+                }
+                
+                if (cleanValue.match(/^\d{1,2}\/\d{1,2}\/\d{4}$/)) {
+                    const parts = cleanValue.split('/');
+                    const day = parts[0].padStart(2, '0');
+                    const month = parts[1].padStart(2, '0');
+                    const year = parts[2];
+                    return `${year}-${month}-${day}`;
+                }
+                
+                if (cleanValue.match(/^\d{4}\.\d{1,2}\.\d{1,2}$/)) {
+                    const parts = cleanValue.split('.');
+                    const year = parts[0];
+                    const month = parts[1].padStart(2, '0');
+                    const day = parts[2].padStart(2, '0');
+                    return `${year}-${month}-${day}`;
+                }
+            }
+            
+            return new Date().toISOString().split('T')[0];
+        }
+
+        // Konwersja stringa daty na obiekt Date
+        function parseDateStringToDate(dateString) {
+            if (!dateString) return new Date();
+            
+            if (dateString.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                const parts = dateString.split('-');
+                const year = parseInt(parts[0]);
+                const month = parseInt(parts[1]) - 1;
+                const day = parseInt(parts[2]);
+                return new Date(year, month, day, 12, 0, 0);
+            }
+            
+            return new Date(dateString);
+        }
+
+        // Parsowanie statusu
+        function parseStatus(statusString) {
+            const statusMap = {
+                'aktywny': 'active',
+                'w kalibracji': 'calibration',
+                'nieużywany': 'unused',
+                'zagubiony': 'lost',
+                'uszkodzony': 'damaged',
+                'active': 'active',
+                'calibration': 'calibration',
+                'unused': 'unused',
+                'lost': 'lost',
+                'damaged': 'damaged'
+            };
+            
+            const lowerStatus = statusString.toLowerCase();
+            return statusMap[lowerStatus] || 'active';
+        }
+
+        // Pokazanie formularza dodawania nowego sprzętu
+        function showAddEquipmentForm() {
+            if (!checkPermission()) return;
+            
+            currentEditingId = null;
+            currentImageFile = null;
+            showEquipmentForm('Dodaj nowy sprzęt');
+        }
+
+        // Pokazanie formularza edycji/dodawania sprzętu - KOMPAKTOWY
+        function showEquipmentForm(title, equipment = null, focusField = null) {
+            const today = new Date().toISOString().split('T')[0];
+            const nextYear = new Date();
+            nextYear.setFullYear(nextYear.getFullYear() + 1);
+            const nextYearStr = nextYear.toISOString().split('T')[0];
+            
+            modalContainer.innerHTML = `
+                <div class="modal-overlay">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="modal-title">${title}</div>
+                            <button class="close-modal" onclick="hideModal()">×</button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="equipment-form-modal" class="compact-form" onsubmit="event.preventDefault(); saveEquipment();">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="inventory-number-modal">Numer ewidencyjny</label>
+                                        <input type="text" id="inventory-number-modal" required value="${equipment ? equipment.inventoryNumber : 'BCH8-OQCREF-'}">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="equipment-name-modal">Nazwa sprzętu</label>
+                                    <input type="text" id="equipment-name-modal" required value="${equipment ? equipment.equipmentName : ''}">
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="manufacturer-modal">Producent</label>
+                                        <input type="text" id="manufacturer-modal" required value="${equipment ? equipment.manufacturer : ''}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="model-modal">Model</label>
+                                        <input type="text" id="model-modal" required value="${equipment ? equipment.model : ''}">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="serial-number-modal">Numer seryjny</label>
+                                    <input type="text" id="serial-number-modal" required value="${equipment ? equipment.serialNumber : ''}">
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="grade-modal">Grade</label>
+                                        <select id="grade-modal" required>
+                                            <option value="A" ${equipment && equipment.grade === 'A' ? 'selected' : 'selected'}>Grade A (1 rok)</option>
+                                            <option value="B" ${equipment && equipment.grade === 'B' ? 'selected' : ''}>Grade B (2 lata)</option>
+                                            <option value="C" ${equipment && equipment.grade === 'C' ? 'selected' : ''}>Grade C (3 lata)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="calibration-date-modal">Data kalibracji</label>
+                                        <input type="date" id="calibration-date-modal" required value="${equipment ? equipment.calibrationDate : today}">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="calibration-validity-modal">Ważność kalibracji</label>
+                                        <input type="date" id="calibration-validity-modal" required value="${equipment ? equipment.calibrationValidity : nextYearStr}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="location-modal">Lokalizacja</label>
+                                        <input type="text" id="location-modal" required value="${equipment ? equipment.location : ''}">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="status-modal">Status</label>
+                                    <select id="status-modal" required>
+                                        <option value="active" ${equipment && equipment.status === 'active' ? 'selected' : ''}>Aktywny</option>
+                                        <option value="calibration" ${equipment && equipment.status === 'calibration' ? 'selected' : ''}>W kalibracji</option>
+                                        <option value="unused" ${equipment && equipment.status === 'unused' ? 'selected' : ''}>Nieużywany</option>
+                                        <option value="lost" ${equipment && equipment.status === 'lost' ? 'selected' : ''}>Zagubiony</option>
+                                        <option value="damaged" ${equipment && equipment.status === 'damaged' ? 'selected' : ''}>Uszkodzony</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Miniaturka sprzętu</label>
+                                    <div class="thumbnail-controls">
+                                        <button type="button" class="btn btn-success" onclick="openCamera()">📸 Zrób zdjęcie</button>
+                                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('image-input').click()">📁 Wybierz z galerii</button>
+                                    </div>
+                                    <img id="image-preview" class="thumbnail-preview" 
+                                        src="${equipment && equipment.imageUrl ? equipment.imageUrl : ''}" 
+                                        ${equipment && equipment.imageUrl ? 'style="display: block;"' : ''}>
+                                    
+                                    ${equipment && equipment.imageUrl ? `
+                                        <div class="thumbnail-controls">
+                                            <button type="button" class="btn btn-danger" onclick="deleteEquipmentImage('${equipment.id}')">🗑️ Usuń obrazek</button>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="notes-modal">Uwagi</label>
+                                    <textarea id="notes-modal" rows="2">${equipment ? equipment.notes : ''}</textarea>
+                                </div>
+                                
+                                <div class="modal-actions">
+                                    <button type="button" class="btn" onclick="hideModal()">Anuluj</button>
+                                    ${currentUser && currentUser.role === 'admin' ? '<button type="submit" class="btn btn-success">Zapisz</button>' : ''}
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            modalContainer.classList.remove('hidden');
+            
+            const calibrationDateInput = document.getElementById('calibration-date-modal');
+            const calibrationValidityInput = document.getElementById('calibration-validity-modal');
+            const gradeSelect = document.getElementById('grade-modal');
+            
+            function updateValidityDate() {
+                if (calibrationDateInput.value) {
+                    const calibrationDate = new Date(calibrationDateInput.value);
+                    const validityDate = new Date(calibrationDate);
+                    
+                    const grade = gradeSelect.value;
+                    if (grade === 'B') {
+                        validityDate.setFullYear(validityDate.getFullYear() + 2);
+                    } else if (grade === 'C') {
+                        validityDate.setFullYear(validityDate.getFullYear() + 3);
+                    } else {
+                        validityDate.setFullYear(validityDate.getFullYear() + 1);
+                    }
+                    
+                    calibrationValidityInput.value = validityDate.toISOString().split('T')[0];
+                }
+            }
+            
+            calibrationDateInput.addEventListener('change', updateValidityDate);
+            gradeSelect.addEventListener('change', updateValidityDate);
+            
+            // Auto-focus na wybrane pole
+            setTimeout(() => {
+                if (focusField === 'calibration-date') {
+                    calibrationDateInput.focus();
+                } else if (focusField === 'location') {
+                    document.getElementById('location-modal').focus();
+                } else {
+                    const inventoryNumberInput = document.getElementById('inventory-number-modal');
+                    inventoryNumberInput.focus();
+                    inventoryNumberInput.setSelectionRange(inventoryNumberInput.value.length, inventoryNumberInput.value.length);
+                }
+            }, 100);
+        }
+
+        // Usuwanie obrazka urządzenia
+        async function deleteEquipmentImage(equipmentId) {
+            if (!checkPermission()) return;
+            
+            if (!confirm('Usunąć obrazek tego urządzenia?')) return;
+            
+            const equipment = equipmentList.find(item => item.id === equipmentId);
+            if (!equipment || !equipment.imageUrl) return;
+            
+            try {
+                equipment.imageUrl = null;
+                currentImageFile = null;
+                
+                if (saveToFirebaseFunc) {
+                    saveToFirebaseFunc();
+                } else {
+                    console.error("saveToFirebaseFunc nie jest dostępna!");
+                    showStatus('Błąd: funkcja Firebase nie jest dostępna', 'error');
+                }
+                
+                const preview = document.getElementById('image-preview');
+                if (preview) {
+                    preview.style.display = 'none';
+                }
+                
+                showStatus('Obrazek usunięty', 'success');
+            } catch (error) {
+                console.error('Błąd usuwania obrazka:', error);
+                showStatus('Błąd usuwania obrazka: ' + error.message, 'error');
+            }
+        }
+
+        // Ukrycie modala
+        function hideModal() {
+            modalContainer.classList.add('hidden');
+            currentImageFile = null;
+            imageInput.value = '';
+            
+            closeCamera();
+        }
+
+        // Zapisywanie sprzętu
+        async function saveEquipment() {
+            if (!checkPermission()) return;
+            
+            const inventoryNumber = document.getElementById('inventory-number-modal').value.trim();
+            const equipmentName = document.getElementById('equipment-name-modal').value.trim();
+            const manufacturer = document.getElementById('manufacturer-modal').value.trim();
+            const model = document.getElementById('model-modal').value.trim();
+            const serialNumber = document.getElementById('serial-number-modal').value.trim();
+            const grade = document.getElementById('grade-modal').value;
+            const calibrationDate = document.getElementById('calibration-date-modal').value;
+            const calibrationValidity = document.getElementById('calibration-validity-modal').value;
+            const location = document.getElementById('location-modal').value.trim();
+            const status = document.getElementById('status-modal').value;
+            const notes = document.getElementById('notes-modal').value.trim();
+            
+            // Walidacja
+            if (!inventoryNumber || !equipmentName || !manufacturer || !model || !serialNumber || !grade || !calibrationDate || !calibrationValidity || !location || !status) {
+                showStatus('Wypełnij wszystkie wymagane pola', 'error');
+                return;
+            }
+            
+            const validityDate = new Date(calibrationValidity);
+            const today = new Date();
+            const timeDiff = validityDate.getTime() - today.getTime();
+            const daysToExpiry = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            
+            const equipmentData = {
+                id: currentEditingId || 'eq_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+                inventoryNumber: inventoryNumber,
+                equipmentName: equipmentName,
+                manufacturer: manufacturer,
+                model: model,
+                serialNumber: serialNumber,
+                grade: grade,
+                calibrationDate: calibrationDate,
+                calibrationValidity: calibrationValidity,
+                daysToExpiry: daysToExpiry,
+                notes: notes,
+                location: location,
+                status: status,
+                imageUrl: null
+            };
+            
+            const existingIndex = equipmentList.findIndex(item => item.id === equipmentData.id);
+            const existingEquipment = existingIndex !== -1 ? equipmentList[existingIndex] : null;
+            
+            if (existingEquipment && existingEquipment.imageUrl && !currentImageFile) {
+                equipmentData.imageUrl = existingEquipment.imageUrl;
+            }
+            
+            if (currentImageFile) {
+                try {
+                    showStatus('Kompresowanie obrazka...', 'info');
+                    console.log('Kompresowanie obrazka dla:', equipmentData.id);
+                    
+                    const base64Image = await compressImageToBase64(currentImageFile, 800, 600, 0.7);
+                    
+                    if (base64Image.length > 500000) {
+                        showStatus('Obrazek jest zbyt duży, kompresuję bardziej...', 'info');
+                        const moreCompressed = await compressImageToBase64(currentImageFile, 400, 300, 0.5);
+                        equipmentData.imageUrl = moreCompressed;
+                        console.log('Obrazek ponownie skompresowany do 400x300');
+                    } else {
+                        equipmentData.imageUrl = base64Image;
+                        console.log('Obrazek skompresowany do Base64');
+                    }
+                    
+                } catch (error) {
+                    console.error('Błąd kompresji obrazka:', error);
+                    showStatus('Błąd kompresji obrazka: ' + error.message, 'error');
+                    return;
+                }
+            }
+            
+            if (existingIndex !== -1) {
+                equipmentList[existingIndex] = equipmentData;
+                showStatus('Zaktualizowano', 'success');
+            } else {
+                equipmentList.push(equipmentData);
+                showStatus('Dodano', 'success');
+            }
+            
+            renderEquipmentList();
+            updateFilters();
+            
+            if (saveToFirebaseFunc) {
+                saveToFirebaseFunc();
+            } else {
+                console.error("saveToFirebaseFunc nie jest dostępna!");
+                showStatus('Błąd: funkcja Firebase nie jest dostępna', 'error');
+                return;
+            }
+            
+            hideModal();
+        }
+
+        // Aktualizacja filtrów
+        function updateFilters() {
+            const locations = [...new Set(equipmentList.map(item => item.location))].filter(Boolean);
+            
+            filterLocation.innerHTML = '<option value="">Wszystkie lokalizacje</option>';
+            locations.forEach(location => {
+                const option = document.createElement('option');
+                option.value = location;
+                option.textContent = location;
+                filterLocation.appendChild(option);
+            });
+        }
+
+        // Renderowanie listy sprzętu
+        function renderEquipmentList() {
+            console.log("renderEquipmentList called, equipmentList length:", equipmentList.length);
+            const searchTerm = searchInput.value.toLowerCase();
+            const locationFilter = filterLocation.value;
+            const statusFilter = filterStatus.value;
+            
+            let filteredList = equipmentList;
+            
+            if (searchTerm) {
+                filteredList = filteredList.filter(item => 
+                    item.inventoryNumber.toLowerCase().includes(searchTerm) ||
+                    item.equipmentName.toLowerCase().includes(searchTerm) ||
+                    item.manufacturer.toLowerCase().includes(searchTerm) ||
+                    item.model.toLowerCase().includes(searchTerm) ||
+                    item.serialNumber.toLowerCase().includes(searchTerm) ||
+                    (item.notes && item.notes.toLowerCase().includes(searchTerm)) ||
+                    item.location.toLowerCase().includes(searchTerm) ||
+                    (item.grade && item.grade.toLowerCase().includes(searchTerm))
+                );
+            }
+            
+            if (locationFilter) {
+                filteredList = filteredList.filter(item => item.location === locationFilter);
+            }
+            
+            if (statusFilter) {
+                filteredList = filteredList.filter(item => item.status === statusFilter);
+            }
+            
+            filteredList.sort((a, b) => {
+                if (a.status === 'active' && b.status !== 'active') return -1;
+                if (a.status !== 'active' && b.status === 'active') return 1;
+                if (a.status === 'active' && b.status === 'active') {
+                    return a.daysToExpiry - b.daysToExpiry;
+                }
+                return 0;
+            });
+            
+            equipmentListDiv.innerHTML = '';
+            
+            if (filteredList.length === 0) {
+                equipmentListDiv.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📋</div>
+                        <div>Brak sprzętu</div>
+                        <div style="margin-top: 8px; font-size: 0.75rem; color: #adb5bd;">Kliknij + aby dodać nowy sprzęt</div>
+                    </div>
+                `;
+                console.log("Wyświetlono pusty stan - brak sprzętu");
+                return;
+            }
+            
+            console.log("Wyświetlanie", filteredList.length, "elementów");
+            filteredList.forEach(equipment => {
+                const item = document.createElement('div');
+                
+                let statusClass = '';
+                let daysClass = '';
+                let statusText = '';
+                
+                if (equipment.status !== 'active') {
+                    statusClass = equipment.status;
+                    statusText = getStatusText(equipment.status);
+                } else {
+                    if (equipment.daysToExpiry < 7) {
+                        statusClass = 'danger';
+                        daysClass = 'danger';
+                    } else if (equipment.daysToExpiry <= 30) {
+                        statusClass = 'warning';
+                        daysClass = 'warning';
+                    }
+                }
+                
+                const hasThumbnail = equipment.imageUrl && equipment.imageUrl.length > 0;
+                item.className = `equipment-item ${statusClass} ${hasThumbnail ? 'item-with-thumbnail' : ''}`;
+                item.onclick = (e) => {
+                    if (e.target.classList.contains('item-status') || 
+                        (e.target.classList.contains('item-detail') && e.target.textContent === equipment.location)) {
+                        e.stopPropagation();
+                        return;
+                    }
+                    showEquipmentDetails(equipment.id);
+                };
+                
+                const gradeDisplay = equipment.grade ? ` (${equipment.grade})` : '';
+                
+                item.innerHTML = `
+                    ${hasThumbnail ? `
+                        <div class="thumbnail-container">
+                            <img src="${equipment.imageUrl}" alt="${equipment.equipmentName}" class="thumbnail">
+                        </div>
+                    ` : ''}
+                    
+                    <div class="item-number">${equipment.inventoryNumber}${gradeDisplay}</div>
+                    <div class="item-name">${equipment.equipmentName}</div>
+                    <div class="item-details">
+                        <span class="item-detail">${equipment.manufacturer}</span>
+                        <span class="item-detail">${equipment.model}</span>
+                        <span class="item-detail" onclick="editEquipmentField('${equipment.id}', 'location')">${equipment.location}</span>
+                    </div>
+                    ${equipment.status === 'active' ? 
+                        `<div class="item-status status-days ${daysClass}" onclick="editEquipmentField('${equipment.id}', 'calibration-date')">${getDaysDisplay(equipment.daysToExpiry)}</div>` : 
+                        `<div class="item-status status-text ${equipment.status}">${statusText}</div>`
+                    }
+                `;
+                
+                equipmentListDiv.appendChild(item);
+            });
+        }
+
+        // Formatowanie wyświetlania dni
+        function getDaysDisplay(days) {
+            if (days < 0) {
+                return `+${Math.abs(days)}d`;
+            } else if (days === 0) {
+                return '0d';
+            } else {
+                return `${days}d`;
+            }
+        }
+
+        // Edycja konkretnego pola sprzętu
+        function editEquipmentField(id, field) {
+            if (!checkPermission()) return;
+            
+            const equipment = equipmentList.find(item => item.id === id);
+            if (equipment) {
+                currentEditingId = equipment.id;
+                currentImageFile = null;
+                showEquipmentForm('Edytuj sprzęt', equipment, field);
+            }
+        }
+
+        // Wyświetlanie szczegółów sprzętu w modal - KOMPAKTOWY
+        function showEquipmentDetails(id) {
+            if (!currentUser) return;
+            
+            const equipment = equipmentList.find(item => item.id === id);
+            if (equipment) {
+                const isViewer = currentUser && currentUser.role === 'viewer';
+                const canEdit = !isViewer;
+                
+                modalContainer.innerHTML = `
+                    <div class="modal-overlay">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <div class="modal-title">Szczegóły sprzętu</div>
+                                <button class="close-modal" onclick="hideModal()">×</button>
+                            </div>
+                            <div class="modal-body">
+                                ${!isViewer ? `
+                                <div class="modal-actions-top">
+                                    <button class="btn btn-danger" onclick="deleteEquipment('${equipment.id}')">Usuń</button>
+                                    <button class="btn" onclick="editEquipment('${equipment.id}')">Edytuj</button>
+                                </div>
+                                ` : ''}
+                                
+                                ${equipment.imageUrl ? `
+                                    <div class="image-preview-container">
+                                        <img src="${equipment.imageUrl}" alt="${equipment.equipmentName}" class="image-preview">
+                                    </div>
+                                ` : ''}
+                                
+                                <div class="detail-grid">
+                                    <div class="detail-item">
+                                        <div class="detail-label">Numer ewidencyjny</div>
+                                        <div class="detail-value">${equipment.inventoryNumber}</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">Nazwa sprzętu</div>
+                                        <div class="detail-value">${equipment.equipmentName}</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">Producent</div>
+                                        <div class="detail-value">${equipment.manufacturer}</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">Model</div>
+                                        <div class="detail-value">${equipment.model}</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">Numer seryjny</div>
+                                        <div class="detail-value">${equipment.serialNumber}</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">Grade</div>
+                                        <div class="detail-value">${equipment.grade || 'A'}</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">Data kalibracji</div>
+                                        <div class="detail-value ${canEdit ? 'clickable' : ''}" ${canEdit ? `onclick="editEquipmentField('${equipment.id}', 'calibration-date')"` : ''}>${formatDate(equipment.calibrationDate)}</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">Ważność kalibracji</div>
+                                        <div class="detail-value ${canEdit ? 'clickable' : ''}" ${canEdit ? `onclick="editEquipmentField('${equipment.id}', 'calibration-date')"` : ''}>${formatDate(equipment.calibrationValidity)}</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">Pozostało dni</div>
+                                        <div class="detail-value ${canEdit ? 'clickable' : ''}" ${canEdit ? `onclick="editEquipmentField('${equipment.id}', 'calibration-date')"` : ''}>${getDaysDisplay(equipment.daysToExpiry)}</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">Lokalizacja</div>
+                                        <div class="detail-value ${canEdit ? 'clickable' : ''}" ${canEdit ? `onclick="editEquipmentField('${equipment.id}', 'location')"` : ''}>${equipment.location}</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">Status</div>
+                                        <div class="detail-value">${getStatusText(equipment.status)}</div>
+                                    </div>
+                                    ${equipment.notes ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Uwagi</div>
+                                        <div class="detail-value">${equipment.notes}</div>
+                                    </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                modalContainer.classList.remove('hidden');
+            }
+        }
+
+        // Pobieranie tekstu statusu
+        function getStatusText(status) {
+            const statusMap = {
+                'calibration': 'W kalibracji',
+                'unused': 'Nieużywany',
+                'lost': 'Zagubiony',
+                'damaged': 'Uszkodzony'
+            };
+            return statusMap[status] || status;
+        }
+
+        // Formatowanie daty
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('pl-PL');
+        }
+
+        // Edycja sprzętu
+        function editEquipment(id) {
+            if (!checkPermission()) return;
+            
+            const equipment = equipmentList.find(item => item.id === id);
+            if (equipment) {
+                currentEditingId = equipment.id;
+                currentImageFile = null;
+                showEquipmentForm('Edytuj sprzęt', equipment);
+            }
+        }
+
+        // Usuwanie sprzętu
+        async function deleteEquipment(id) {
+            if (!checkPermission()) return;
+            
+            if (confirm('Usunąć ten sprzęt?')) {
+                equipmentList = equipmentList.filter(item => item.id !== id);
+                
+                renderEquipmentList();
+                updateFilters();
+                
+                if (saveToFirebaseFunc) {
+                    saveToFirebaseFunc();
+                } else {
+                    console.error("saveToFirebaseFunc nie jest dostępna!");
+                    showStatus('Błąd: funkcja Firebase nie jest dostępna', 'error');
+                    return;
+                }
+                
+                hideModal();
+                showStatus('Usunięto', 'success');
+            }
+        }
+
+        // Wyświetlanie komunikatów statusu
+        function showStatus(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message ${type}`;
+            statusMessage.style.display = 'block';
+            
+            setTimeout(() => {
+                statusMessage.style.display = 'none';
+            }, 3000);
+        }
+
+        // Funkcje do komunikacji z Firebase
+        function getEquipmentList() {
+            return equipmentList;
+        }
+
+        function clearLocalEquipmentList() {
+            equipmentList = [];
+            renderEquipmentList();
+            updateFilters();
+        }
+
+        // Funkcja do aktualizacji listy sprzętu z Firebase
+        function updateEquipmentListFromFirebase(newList) {
+            equipmentList = newList;
+            renderEquipmentList();
+            updateFilters();
+        }
+
+        // Udostępnienie funkcji globalnie
+        window.editEquipment = editEquipment;
+        window.editEquipmentField = editEquipmentField;
+        window.deleteEquipment = deleteEquipment;
+        window.deleteEquipmentImage = deleteEquipmentImage;
+        window.showEquipmentDetails = showEquipmentDetails;
+        window.hideModal = hideModal;
+        window.saveEquipment = saveEquipment;
+        window.openCamera = openCamera;
+        window.closeCamera = closeCamera;
+        window.switchCamera = switchCamera;
+        window.capturePhoto = capturePhoto;
+        window.logout = logout;
+        window.renderEquipmentList = renderEquipmentList;
+        window.updateFilters = updateFilters;
+        window.showStatus = showStatus;
+        window.getEquipmentList = getEquipmentList;
+        window.clearLocalEquipmentList = clearLocalEquipmentList;
+        window.updateEquipmentListFromFirebase = updateEquipmentListFromFirebase;
+        
+        // Rejestracja funkcji Firebase
+        window.setFirebaseFunctions = function(saveFunc, clearFunc, updateFunc) {
+            saveToFirebaseFunc = saveFunc;
+            clearFirebaseFunc = clearFunc;
+            updateLastUpdatedInFirebaseFunc = updateFunc;
+            console.log("Funkcje Firebase zarejestrowane");
+        };
+    </script>
+
+    <!-- Firebase initialization - POPRAWIONA WERSJA -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, set, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBrqGil-2FYCLxt5uwpffaCDXS88I4uKuI",
+            authDomain: "calibra-3153f.firebaseapp.com",
+            databaseURL: "https://calibra-3153f-default-rtdb.firebaseio.com",
+            projectId: "calibra-3153f",
+            storageBucket: "calibra-3153f.firebasestorage.app",
+            messagingSenderId: "29752828059",
+            appId: "1:29752828059:web:efe4b411c503c23c97e63e"
+        };
+
+        console.log("Inicjalizacja Firebase...");
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const equipmentRef = ref(db, "equipmentList");
+        const lastUpdatedRef = ref(db, "lastUpdated");
+
+        console.log("Firebase zainicjalizowany:", app.name);
+        console.log("Referencja do equipmentList:", equipmentRef.toString());
+
+        // Funkcja do aktualizacji daty w Firebase
+        function updateLastUpdatedInFirebase() {
+            const now = new Date();
+            const formattedDate = now.toLocaleString('pl-PL', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            
+            console.log("Aktualizacja daty w Firebase:", formattedDate);
+            set(lastUpdatedRef, {
+                timestamp: now.getTime(),
+                formatted: formattedDate
+            })
+            .then(() => {
+                console.log('Data ostatniej aktualizacji zapisana w Firebase');
+            })
+            .catch((error) => {
+                console.error('Błąd zapisu daty aktualizacji:', error);
+            });
+        }
+
+        // 💾 ZAPIS do Firebase - POPRAWIONE
+        function saveToFirebase() {
+            console.log("saveToFirebase called");
+            
+            // Pobierz dane z głównego skryptu
+            if (typeof window.getEquipmentList === 'function') {
+                const equipmentData = window.getEquipmentList();
+                console.log("Zapisywanie danych do Firebase:", equipmentData ? equipmentData.length : 0, "elementów");
+                
+                if (equipmentData && Array.isArray(equipmentData)) {
+                    set(equipmentRef, equipmentData)
+                        .then(() => {
+                            console.log('Dane sprzętu zapisane w Firebase');
+                            // Następnie zaktualizuj datę ostatniej modyfikacji
+                            updateLastUpdatedInFirebase();
+                        })
+                        .catch((error) => {
+                            console.error('Błąd zapisu do Firebase:', error);
+                            if (window.showStatus && typeof window.showStatus === 'function') {
+                                window.showStatus('Błąd zapisu do Firebase: ' + error.message, 'error');
+                            }
+                        });
+                } else {
+                    console.error("Brak danych do zapisania");
+                }
+            } else {
+                console.error("getEquipmentList nie jest dostępna!");
+            }
+        }
+
+        // ❌ USUWANIE z Firebase
+        function clearFirebase() {
+            console.log("clearFirebase called");
+            // Usuń wszystkie dane sprzętu
+            remove(equipmentRef)
+                .then(() => {
+                    console.log("Dane usunięte z Firebase");
+                    // Wyczyść lokalną listę
+                    if (typeof window.clearLocalEquipmentList === 'function') {
+                        window.clearLocalEquipmentList();
+                    }
+                    // Zaktualizuj datę ostatniej modyfikacji
+                    updateLastUpdatedInFirebase();
+                    if (window.showStatus && typeof window.showStatus === 'function') {
+                        window.showStatus('Wszystkie dane zostały usunięte', 'success');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Błąd usuwania z Firebase:', error);
+                    if (window.showStatus && typeof window.showStatus === 'function') {
+                        window.showStatus('Błąd usuwania z Firebase: ' + error.message, 'error');
+                    }
+                });
+        }
+
+        // Nasłuchuj zmian daty w Firebase
+        onValue(lastUpdatedRef, (snapshot) => {
+            console.log("onValue dla lastUpdated triggered");
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                console.log('Dane z lastUpdated:', data);
+                document.getElementById('last-updated-time').textContent = data.formatted;
+            } else {
+                console.log('Brak danych lastUpdated w Firebase');
+                // Jeśli nie ma danych, ustaw bieżącą datę
+                updateLastUpdatedInFirebase();
+            }
+        }, (error) => {
+            console.error('Błąd odczytu lastUpdated:', error);
+        });
+
+        // 🔄 AUTO-SYNC (ODCZYT) - POPRAWIONE
+        console.log("Ustawienie nasłuchiwania na equipmentList...");
+        onValue(equipmentRef, (snapshot) => {
+            console.log("onValue dla equipmentList triggered");
+            console.log("Snapshot exists:", snapshot.exists());
+            
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                console.log("Dane z Firebase (surowy obiekt):", data);
+                console.log("Typ danych:", typeof data);
+                
+                // Konwertuj obiekt na tablicę jeśli potrzebne
+                let newEquipmentList = [];
+                
+                if (Array.isArray(data)) {
+                    newEquipmentList = data;
+                    console.log("Dane są już tablicą, długość:", newEquipmentList.length);
+                } else if (data && typeof data === 'object') {
+                    // Jeśli to obiekt, konwertuj na tablicę
+                    newEquipmentList = Object.values(data);
+                    console.log("Konwersja obiektu na tablicę, długość:", newEquipmentList.length);
+                } else {
+                    console.log("Nieznany format danych:", data);
+                    newEquipmentList = [];
+                }
+                
+                // Aktualizacja dni do wygaśnięcia dla załadowanych danych
+                newEquipmentList.forEach(item => {
+                    if (item.calibrationValidity) {
+                        const validityDate = new Date(item.calibrationValidity);
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+                        validityDate.setHours(0, 0, 0, 0);
+                        const timeDiff = validityDate.getTime() - today.getTime();
+                        item.daysToExpiry = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                    }
+                });
+                
+                // Aktualizuj listę w głównym skrypcie
+                if (typeof window.updateEquipmentListFromFirebase === 'function') {
+                    window.updateEquipmentListFromFirebase(newEquipmentList);
+                    console.log('Dane załadowane z Firebase:', newEquipmentList.length, 'pozycji');
+                } else {
+                    console.error("updateEquipmentListFromFirebase nie jest dostępna!");
+                }
+            } else {
+                console.log('Brak danych w Firebase - ustawiam pustą tablicę');
+                if (typeof window.clearLocalEquipmentList === 'function') {
+                    window.clearLocalEquipmentList();
+                }
+            }
+        }, (error) => {
+            console.error('Błąd odczytu equipmentList:', error);
+        });
+
+        // Eksport funkcji do głównego skryptu
+        console.log("Eksportowanie funkcji Firebase do głównego skryptu...");
+        if (window.setFirebaseFunctions && typeof window.setFirebaseFunctions === 'function') {
+            window.setFirebaseFunctions(saveToFirebase, clearFirebase, updateLastUpdatedInFirebase);
+            console.log("Funkcje Firebase przekazane do głównego skryptu");
+        } else {
+            console.error("setFirebaseFunctions nie jest dostępna w window!");
+        }
+    </script>
+</body>
+</html>
