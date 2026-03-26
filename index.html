@@ -374,15 +374,41 @@
             background: #f0f0f0;
         }
         
-        .bottom-checkbox input {
-            width: 16px;
-            height: 16px;
+        /* Stylizacja checkboxa z X */
+        .bottom-checkbox input[type="checkbox"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 1px solid #6c757d;
+            border-radius: 3px;
+            background: white;
             cursor: pointer;
+            position: relative;
             margin: 0;
+            padding: 0;
+            vertical-align: middle;
         }
         
-        .bottom-checkbox span {
-            margin-left: 2px;
+        .bottom-checkbox input[type="checkbox"]:checked {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+        
+        .bottom-checkbox input[type="checkbox"]:checked::after {
+            content: "✕";
+            display: block;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            line-height: 16px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
         }
         
         .hidden {
@@ -881,7 +907,8 @@
             .equipment-item { min-height: 95px; }
             .item-name, .item-details { padding-right: 50px; }
             .bottom-checkbox { bottom: 5px; right: 8px; font-size: 0.6rem; padding: 1px 4px; }
-            .bottom-checkbox input { width: 14px; height: 14px; }
+            .bottom-checkbox input[type="checkbox"] { width: 16px; height: 16px; }
+            .bottom-checkbox input[type="checkbox"]:checked::after { font-size: 10px; line-height: 14px; }
             .item-status { top: 8px; right: 8px; padding: 3px 8px; font-size: 0.65rem; }
         }
     </style>
@@ -1107,7 +1134,7 @@
             return;
         }
         const exportData = equipmentList.map(item => ({
-            'Stan': item.checked ? '✓' : '',
+            'Stan': item.checked ? '✕' : '',
             'Numer ewidencyjny': item.inventoryNumber,
             'Nazwa sprzętu': item.equipmentName,
             'Producent': item.manufacturer,
@@ -1154,7 +1181,7 @@
                     location: item['Lokalizacja'] || item['location'] || '',
                     status: parseStatus(item['Status'] || item['status'] || 'active'),
                     notes: item['Uwagi'] || item['notes'] || '',
-                    checked: item['Stan'] === '✓' || false,
+                    checked: item['Stan'] === '✕' || false,
                     imageUrl: null
                 })).filter(item => item.inventoryNumber && item.equipmentName);
                 
