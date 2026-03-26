@@ -288,37 +288,12 @@
             font-size: 0.9rem;
         }
         
-        .item-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.7rem;
-            font-weight: normal;
-            color: #6c757d;
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 4px 8px;
-            border-radius: 6px;
-            transition: background 0.2s;
-        }
-        
-        .item-checkbox:hover {
-            background: #f0f0f0;
-        }
-        
-        .item-checkbox input {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-            margin: 0;
-        }
-        
         .item-name {
             font-weight: 500;
             color: #495057;
             font-size: 0.85rem;
             margin-bottom: 4px;
+            padding-right: 60px;
         }
         
         .item-details {
@@ -328,6 +303,7 @@
             font-size: 0.7rem;
             color: #6c757d;
             margin-bottom: 2px;
+            padding-right: 60px;
         }
         
         .item-detail {
@@ -375,6 +351,38 @@
         
         .status-text.calibration {
             background: linear-gradient(135deg, #6f42c1 0%, #5a32a3 100%);
+        }
+        
+        .bottom-checkbox {
+            position: absolute;
+            bottom: 8px;
+            right: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.65rem;
+            color: #6c757d;
+            background: rgba(255,255,255,0.9);
+            padding: 2px 6px;
+            border-radius: 12px;
+            cursor: pointer;
+            z-index: 5;
+            transition: all 0.2s;
+        }
+        
+        .bottom-checkbox:hover {
+            background: #f0f0f0;
+        }
+        
+        .bottom-checkbox input {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            margin: 0;
+        }
+        
+        .bottom-checkbox span {
+            margin-left: 2px;
         }
         
         .hidden {
@@ -871,9 +879,10 @@
             .compact-btn { padding: 5px 12px; font-size: 0.7rem; }
             .fab { bottom: 15px; right: 15px; width: 50px; height: 50px; font-size: 1.4rem; }
             .equipment-item { min-height: 95px; }
-            .item-checkbox { padding: 2px 4px; }
-            .item-checkbox input { width: 16px; height: 16px; }
-            .item-status { padding: 3px 8px; font-size: 0.65rem; }
+            .item-name, .item-details { padding-right: 50px; }
+            .bottom-checkbox { bottom: 5px; right: 8px; font-size: 0.6rem; padding: 1px 4px; }
+            .bottom-checkbox input { width: 14px; height: 14px; }
+            .item-status { top: 8px; right: 8px; padding: 3px 8px; font-size: 0.65rem; }
         }
     </style>
 </head>
@@ -1466,7 +1475,6 @@
                         ` : ''}
                         ${eq.imageUrl ? `<div class="image-preview-container"><img src="${eq.imageUrl}" class="image-preview"></div>` : ''}
                         <div class="detail-grid">
-                            <div class="detail-item"><div class="detail-label">Stan</div><div class="detail-value"><input type="checkbox" ${eq.checked ? 'checked' : ''} ${canEdit ? 'onchange="toggleCheckbox(\''+eq.id+'\', this.checked, event)"' : 'disabled'}></div></div>
                             <div class="detail-item"><div class="detail-label">Numer ewidencyjny</div><div class="detail-value">${eq.inventoryNumber}</div></div>
                             <div class="detail-item"><div class="detail-label">Nazwa sprzętu</div><div class="detail-value">${eq.equipmentName}</div></div>
                             <div class="detail-item"><div class="detail-label">Producent</div><div class="detail-value">${eq.manufacturer}</div></div>
@@ -1551,9 +1559,6 @@
                     ${hasThumb ? `<div class="thumbnail-container"><img src="${eq.imageUrl}" class="thumbnail"></div>` : ''}
                     <div class="item-header">
                         <div class="item-number">${eq.inventoryNumber}${eq.grade ? ` (${eq.grade})` : ''}</div>
-                        <button class="item-checkbox" onclick="event.stopPropagation(); toggleCheckbox('${eq.id}', ${!eq.checked}, event)">
-                            <input type="checkbox" ${eq.checked ? 'checked' : ''} onclick="event.stopPropagation(); toggleCheckbox('${eq.id}', this.checked, event)"> Stan
-                        </button>
                     </div>
                     <div class="item-name">${eq.equipmentName}</div>
                     <div class="item-details">
@@ -1563,6 +1568,10 @@
                         ${eq.notes ? `<span class="item-detail" style="background:#fff3cd;">📝 ${eq.notes.length > 20 ? eq.notes.substring(0,20)+'...' : eq.notes}</span>` : ''}
                     </div>
                     ${statusDisplay}
+                    <div class="bottom-checkbox" onclick="event.stopPropagation(); toggleCheckbox('${eq.id}', ${!eq.checked}, event)">
+                        <input type="checkbox" ${eq.checked ? 'checked' : ''} onclick="event.stopPropagation(); toggleCheckbox('${eq.id}', this.checked, event)">
+                        <span>Stan</span>
+                    </div>
                 </div>
             `;
         }).join('');
