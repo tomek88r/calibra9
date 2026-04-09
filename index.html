@@ -372,14 +372,15 @@
         
         .item-notes {
             background: #fef3c7;
-            padding: 4px 8px;
+            padding: 4px 10px;
             border-radius: 6px;
             font-size: 0.7rem;
             color: #92400e;
             margin-top: 4px;
             word-break: break-word;
             display: inline-block;
-            max-width: 100%;
+            max-width: 90%;
+            align-self: flex-start;
         }
         
         .item-status {
@@ -402,7 +403,6 @@
             transform: scale(1.1);
         }
         
-        /* Checkbox w prawym dolnym rogu */
         .item-checkbox {
             position: absolute;
             bottom: 8px;
@@ -1047,6 +1047,11 @@
                 font-size: 14px;
             }
             
+            .item-notes {
+                max-width: 85%;
+                font-size: 0.65rem;
+            }
+            
             .camera-btn {
                 width: 50px;
                 height: 50px;
@@ -1167,6 +1172,10 @@
         window.equipmentList = [];
         let currentUser = null;
         let selectedItems = new Set();
+        let currentImageFile = null;
+        let currentEditingId = null;
+        let cameraStream = null;
+        let useFrontCamera = false;
 
         const loginScreen = document.getElementById('login-screen');
         const appContainer = document.getElementById('app-container');
@@ -1229,6 +1238,26 @@
             return days === 0 ? '0d' : `${days}d`;
         }
 
+        function compressImageToBase64(file, maxW, maxH, quality) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let w = img.width, h = img.height;
+                        if (w > h) { if (w > maxW) { h = (h * maxW) / w; w = maxW; } }
+                        else { if (h > maxH) { w = (w * maxH) / h; h = maxH; } }
+                        canvas.width = w; canvas.height = h;
+                        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                        resolve(canvas.toDataURL('image/jpeg', quality));
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
         async function toggleCheckbox(itemId) {
             if (selectedItems.has(itemId)) {
                 selectedItems.delete(itemId);
@@ -1238,15 +1267,6 @@
             await set(selectedItemsRef, Array.from(selectedItems));
             renderEquipmentList();
         }
-
-        onValue(selectedItemsRef, (snapshot) => {
-            if (snapshot.exists()) {
-                selectedItems = new Set(snapshot.val());
-            } else {
-                selectedItems.clear();
-            }
-            renderEquipmentList();
-        });
 
         function renderEquipmentList() {
             const searchTerm = searchInput.value.toLowerCase();
@@ -1291,14 +1311,14 @@
                 
                 item.innerHTML = `
                     ${hasThumbnail ? `<div class="thumbnail-container"><img src="${equipment.imageUrl}" class="thumbnail"></div>` : ''}
-                    <div class="item-number">${equipment.inventoryNumber}</div>
-                    <div class="item-name">${equipment.equipmentName}</div>
+                    <div class="item-number">${escapeHtml(equipment.inventoryNumber)}</div>
+                    <div class="item-name">${escapeHtml(equipment.equipmentName)}</div>
                     <div class="item-details">
-                        <span class="item-detail">${equipment.manufacturer}</span>
-                        <span class="item-detail">${equipment.model}</span>
-                        <span class="item-detail" onclick="event.stopPropagation(); editEquipmentField('${equipment.id}', 'location')">${equipment.location}</span>
+                        <span class="item-detail">${escapeHtml(equipment.manufacturer)}</span>
+                        <span class="item-detail">${escapeHtml(equipment.model)}</span>
+                        <span class="item-detail" onclick="event.stopPropagation(); editEquipmentField('${equipment.id}', 'location')">${escapeHtml(equipment.location)}</span>
                     </div>
-                    ${equipment.notes ? `<div class="item-notes">📝 ${equipment.notes.substring(0, 50)}${equipment.notes.length > 50 ? '...' : ''}</div>` : ''}
+                    ${equipment.notes ? `<div class="item-notes">📝 ${escapeHtml(equipment.notes.substring(0, 60))}${equipment.notes.length > 60 ? '...' : ''}</div>` : ''}
                     ${equipment.status === 'active' ? 
                         `<div class="item-status status-days ${daysClass}" onclick="event.stopPropagation(); editEquipmentField('${equipment.id}', 'calibration-date')">${getDaysDisplay(equipment.daysToExpiry)}</div>` : 
                         `<div class="item-status status-text ${equipment.status}">${getStatusText(equipment.status)}</div>`
@@ -1306,6 +1326,16 @@
                     <div class="item-checkbox ${isChecked ? 'checked' : ''}" onclick="event.stopPropagation(); toggleCheckbox('${equipment.id}')"><input type="checkbox" ${isChecked ? 'checked' : ''}></div>
                 `;
                 equipmentListDiv.appendChild(item);
+            });
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
             });
         }
 
@@ -1318,28 +1348,145 @@
                     <div class="modal-body">
                         ${currentUser?.role !== 'viewer' ? `<div class="modal-actions-top"><button class="btn btn-danger" onclick="deleteEquipment('${eq.id}')">Usuń</button><button class="btn" onclick="editEquipment('${eq.id}')">Edytuj</button></div>` : ''}
                         ${eq.imageUrl ? `<div style="text-align:center;margin-bottom:20px;"><img src="${eq.imageUrl}" style="max-width:100%;max-height:200px;border-radius:8px;"></div>` : ''}
-                        <div class="detail-row"><div class="detail-label">Numer:</div><div class="detail-value">${eq.inventoryNumber}</div></div>
-                        <div class="detail-row"><div class="detail-label">Nazwa:</div><div class="detail-value">${eq.equipmentName}</div></div>
-                        <div class="detail-row"><div class="detail-label">Producent:</div><div class="detail-value">${eq.manufacturer}</div></div>
-                        <div class="detail-row"><div class="detail-label">Model:</div><div class="detail-value">${eq.model}</div></div>
-                        <div class="detail-row"><div class="detail-label">Seryjny:</div><div class="detail-value">${eq.serialNumber}</div></div>
+                        <div class="detail-row"><div class="detail-label">Numer:</div><div class="detail-value">${escapeHtml(eq.inventoryNumber)}</div></div>
+                        <div class="detail-row"><div class="detail-label">Nazwa:</div><div class="detail-value">${escapeHtml(eq.equipmentName)}</div></div>
+                        <div class="detail-row"><div class="detail-label">Producent:</div><div class="detail-value">${escapeHtml(eq.manufacturer)}</div></div>
+                        <div class="detail-row"><div class="detail-label">Model:</div><div class="detail-value">${escapeHtml(eq.model)}</div></div>
+                        <div class="detail-row"><div class="detail-label">Seryjny:</div><div class="detail-value">${escapeHtml(eq.serialNumber)}</div></div>
                         <div class="detail-row"><div class="detail-label">Kalibracja:</div><div class="detail-value">${formatDate(eq.calibrationDate)}</div></div>
                         <div class="detail-row"><div class="detail-label">Ważność:</div><div class="detail-value">${formatDate(eq.calibrationValidity)}</div></div>
                         <div class="detail-row"><div class="detail-label">Dni:</div><div class="detail-value">${getDaysDisplay(eq.daysToExpiry)}</div></div>
-                        <div class="detail-row"><div class="detail-label">Lokalizacja:</div><div class="detail-value">${eq.location}</div></div>
+                        <div class="detail-row"><div class="detail-label">Lokalizacja:</div><div class="detail-value">${escapeHtml(eq.location)}</div></div>
                         <div class="detail-row"><div class="detail-label">Status:</div><div class="detail-value">${getStatusText(eq.status)}</div></div>
-                        <div class="detail-row"><div class="detail-label">Uwagi:</div><div class="detail-value">${eq.notes || 'Brak'}</div></div>
+                        <div class="detail-row"><div class="detail-label">Uwagi:</div><div class="detail-value">${escapeHtml(eq.notes) || 'Brak'}</div></div>
                     </div>
                 </div></div>
             `;
             modalContainer.classList.remove('hidden');
         }
 
-        window.hideModal = () => { modalContainer.classList.add('hidden'); };
+        window.hideModal = () => { 
+            modalContainer.classList.add('hidden'); 
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(track => track.stop());
+                cameraStream = null;
+            }
+            cameraContainer.classList.add('hidden');
+        };
+        
         window.toggleCheckbox = toggleCheckbox;
-        window.editEquipmentField = (id, field) => { if(checkPermission()) showEquipmentForm('Edytuj', window.equipmentList.find(i=>i.id===id), field); };
-        window.editEquipment = (id) => { if(checkPermission()) showEquipmentForm('Edytuj', window.equipmentList.find(i=>i.id===id)); };
-        window.deleteEquipment = async (id) => { if(checkPermission() && confirm('Usunąć?')) { window.equipmentList = window.equipmentList.filter(i=>i.id!==id); await saveToFirebase(); hideModal(); showStatus('Usunięto','success'); } };
+        window.editEquipmentField = (id, field) => { if(checkPermission()) showEquipmentForm('Edytuj sprzęt', window.equipmentList.find(i=>i.id===id), field); };
+        window.editEquipment = (id) => { if(checkPermission()) showEquipmentForm('Edytuj sprzęt', window.equipmentList.find(i=>i.id===id)); };
+        window.deleteEquipment = async (id) => { 
+            if(checkPermission() && confirm('Usunąć ten sprzęt?')) { 
+                window.equipmentList = window.equipmentList.filter(i=>i.id!==id); 
+                await saveToFirebase(); 
+                hideModal(); 
+                showStatus('Usunięto','success'); 
+            } 
+        };
+        
+        window.openCamera = function() {
+            if (!checkPermission()) return;
+            cameraContainer.innerHTML = `
+                <div class="camera-modal">
+                    <div class="camera-flash" id="camera-flash"></div>
+                    <video class="camera-preview" id="camera-preview" autoplay playsinline></video>
+                    <div class="camera-top-bar">
+                        <button class="camera-close camera-btn" onclick="closeCamera()">✕</button>
+                        <button class="camera-switch" onclick="switchCamera()">🔄</button>
+                    </div>
+                    <div class="camera-controls">
+                        <button class="camera-capture camera-btn" onclick="capturePhoto()">📸</button>
+                    </div>
+                </div>
+            `;
+            cameraContainer.classList.remove('hidden');
+            startCamera();
+        };
+        
+        window.closeCamera = function() {
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(track => track.stop());
+                cameraStream = null;
+            }
+            cameraContainer.classList.add('hidden');
+            cameraContainer.innerHTML = '';
+        };
+        
+        window.switchCamera = function() {
+            useFrontCamera = !useFrontCamera;
+            startCamera();
+        };
+        
+        window.capturePhoto = function() {
+            const video = document.getElementById('camera-preview');
+            if (!video) return;
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            const flash = document.getElementById('camera-flash');
+            if (flash) {
+                flash.classList.remove('flash-animation');
+                void flash.offsetWidth;
+                flash.classList.add('flash-animation');
+            }
+            canvas.toBlob(async (blob) => {
+                const fileName = `photo_${Date.now()}.jpg`;
+                currentImageFile = new File([blob], fileName, { type: 'image/jpeg' });
+                const preview = document.getElementById('image-preview');
+                if (preview) {
+                    const url = URL.createObjectURL(blob);
+                    preview.src = url;
+                    preview.style.display = 'block';
+                }
+                closeCamera();
+                showStatus('Zdjęcie zrobione', 'success');
+            }, 'image/jpeg', 0.8);
+        };
+        
+        async function startCamera() {
+            try {
+                if (cameraStream) {
+                    cameraStream.getTracks().forEach(track => track.stop());
+                }
+                const constraints = {
+                    video: { facingMode: useFrontCamera ? "user" : "environment", width: { ideal: 1920 }, height: { ideal: 1080 } },
+                    audio: false
+                };
+                cameraStream = await navigator.mediaDevices.getUserMedia(constraints);
+                const video = document.getElementById('camera-preview');
+                if (video) video.srcObject = cameraStream;
+            } catch (error) {
+                console.error('Błąd kamery:', error);
+                showStatus('Nie można uzyskać dostępu do kamery', 'error');
+                closeCamera();
+            }
+        }
+        
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            if (file.size > 5 * 1024 * 1024) {
+                showStatus('Plik za duży (max 5MB)', 'error');
+                return;
+            }
+            if (!file.type.match('image.*')) {
+                showStatus('Wybierz plik graficzny', 'error');
+                return;
+            }
+            currentImageFile = file;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('image-preview');
+                if (preview) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+            };
+            reader.readAsDataURL(file);
+        }
         
         function updateFilters() {
             const locations = [...new Set(window.equipmentList.map(i=>i.location).filter(Boolean))];
@@ -1376,7 +1523,15 @@
 
         onValue(lastUpdatedRef, (snapshot) => {
             if (snapshot.exists()) lastUpdatedTime.textContent = snapshot.val().formatted;
-            else saveToFirebase();
+        });
+        
+        onValue(selectedItemsRef, (snapshot) => {
+            if (snapshot.exists()) {
+                selectedItems = new Set(snapshot.val());
+            } else {
+                selectedItems.clear();
+            }
+            renderEquipmentList();
         });
 
         function loginUser(user) {
@@ -1394,24 +1549,34 @@
             }
         }
 
-        function logout() { if(confirm('Wylogować?')) { currentUser=null; localStorage.removeItem('calibra_user'); loginScreen.classList.remove('hidden'); appContainer.classList.add('hidden'); } }
+        function logout() { 
+            if(confirm('Wylogować się?')) { 
+                currentUser=null; 
+                localStorage.removeItem('calibra_user'); 
+                loginScreen.classList.remove('hidden'); 
+                appContainer.classList.add('hidden'); 
+            } 
+        }
 
         loginButton.onclick = () => {
             const user = authorizedUsers.find(u=>u.username===loginUsername.value.trim() && u.password===loginPassword.value.trim());
             if(user) loginUser(user);
-            else { loginError.textContent='Nieprawidłowe dane'; loginError.style.display='block'; }
+            else { loginError.textContent='Nieprawidłowa nazwa użytkownika lub hasło'; loginError.style.display='block'; }
         };
-        logoutButton.onclick = logout;
+        
+        window.logout = logout;
+        
         addEquipmentBtn.onclick = () => { if(checkPermission()) showEquipmentForm('Dodaj nowy sprzęt'); };
         exportExcelBtn.onclick = () => exportToExcel();
         importExcelBtn.onclick = () => { if(checkPermission()) excelInput.click(); };
-        clearAllBtn.onclick = () => { if(checkPermission() && confirm('Usunąć WSZYSTKIE dane?')) remove(equipmentRef).then(()=>{window.equipmentList=[];renderEquipmentList();saveToFirebase();}); };
+        clearAllBtn.onclick = () => { if(checkPermission() && confirm('Usunąć WSZYSTKIE dane? Tej operacji nie można cofnąć!')) { remove(equipmentRef).then(()=>{window.equipmentList=[];renderEquipmentList();}); } };
         searchInput.oninput = () => renderEquipmentList();
         filterLocation.onchange = () => renderEquipmentList();
         filterStatus.onchange = () => renderEquipmentList();
+        imageInput.onchange = handleImageUpload;
         
         function exportToExcel() {
-            if(window.equipmentList.length===0) { showStatus('Brak danych','error'); return; }
+            if(window.equipmentList.length===0) { showStatus('Brak danych do eksportu','error'); return; }
             const data = window.equipmentList.map(i=>({
                 'Numer ewidencyjny': i.inventoryNumber, 'Nazwa sprzętu': i.equipmentName, 'Producent': i.manufacturer,
                 'Model': i.model, 'Numer seryjny': i.serialNumber, 'Data kalibracji': i.calibrationDate,
@@ -1450,66 +1615,90 @@
                     daysToExpiry: 0
                 })).filter(i=>i.inventoryNumber && i.equipmentName);
                 if(imported.length) {
-                    if(confirm(`Dodać ${imported.length} pozycji?`)) window.equipmentList.push(...imported);
+                    if(confirm(`Znaleziono ${imported.length} pozycji. Dodać do istniejących? (OK - dodaj, Anuluj - zastąp)`)) window.equipmentList.push(...imported);
                     else window.equipmentList = imported;
                     saveToFirebase();
                     showStatus(`Zaimportowano ${imported.length} pozycji`,'success');
+                } else {
+                    showStatus('Brak poprawnych danych w pliku','error');
                 }
             };
             reader.readAsArrayBuffer(file);
             excelInput.value = '';
         };
         
-        let currentImageFile=null, currentEditingId=null, cameraStream=null, useFrontCamera=false;
-        function compressImageToBase64(file, maxW, maxH, quality) {
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const img = new Image();
-                    img.onload = () => {
-                        const canvas = document.createElement('canvas');
-                        let w=img.width, h=img.height;
-                        if(w>h) { if(w>maxW) { h=(h*maxW)/w; w=maxW; } }
-                        else { if(h>maxH) { w=(w*maxH)/h; h=maxH; } }
-                        canvas.width=w; canvas.height=h;
-                        canvas.getContext('2d').drawImage(img,0,0,w,h);
-                        resolve(canvas.toDataURL('image/jpeg', quality));
-                    };
-                    img.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-        
         window.showEquipmentForm = async (title, equipment=null, focusField=null) => {
+            currentEditingId = equipment?.id || null;
+            currentImageFile = null;
+            
             const today = new Date().toISOString().split('T')[0];
-            const nextYear = new Date(); nextYear.setFullYear(nextYear.getFullYear()+1);
+            const nextYear = new Date(); 
+            nextYear.setFullYear(nextYear.getFullYear()+1);
+            
             modalContainer.innerHTML = `
                 <div class="modal-overlay"><div class="modal-content">
                     <div class="modal-header"><div class="modal-title">${title}</div><button class="close-modal" onclick="hideModal()">×</button></div>
                     <div class="modal-body">
                         <form id="eq-form" onsubmit="event.preventDefault(); saveEquipment();">
-                            <div class="form-group"><label>Numer ewidencyjny</label><input id="inv-num" required value="${equipment?.inventoryNumber || 'BCH8-OQCREF-'}"></div>
-                            <div class="form-group"><label>Nazwa sprzętu</label><input id="eq-name" required value="${equipment?.equipmentName || ''}"></div>
-                            <div class="form-row"><div class="form-group"><label>Producent</label><input id="manuf" required value="${equipment?.manufacturer || ''}"></div>
-                            <div class="form-group"><label>Model</label><input id="model" required value="${equipment?.model || ''}"></div></div>
-                            <div class="form-group"><label>Numer seryjny</label><input id="serial" required value="${equipment?.serialNumber || ''}"></div>
-                            <div class="form-row"><div class="form-group"><label>Data kalibracji</label><input type="date" id="cal-date" required value="${equipment?.calibrationDate || today}"></div>
-                            <div class="form-group"><label>Ważność kalibracji</label><input type="date" id="cal-valid" required value="${equipment?.calibrationValidity || nextYear.toISOString().split('T')[0]}"></div></div>
-                            <div class="form-row"><div class="form-group"><label>Lokalizacja</label><input id="loc" required value="${equipment?.location || ''}"></div>
+                            <div class="form-row"><div class="form-group"><label>Numer ewidencyjny *</label><input id="inv-num" required value="${escapeHtml(equipment?.inventoryNumber || 'BCH8-OQCREF-')}"></div></div>
+                            <div class="form-group"><label>Nazwa sprzętu *</label><input id="eq-name" required value="${escapeHtml(equipment?.equipmentName || '')}"></div>
+                            <div class="form-row"><div class="form-group"><label>Producent *</label><input id="manuf" required value="${escapeHtml(equipment?.manufacturer || '')}"></div>
+                            <div class="form-group"><label>Model *</label><input id="model" required value="${escapeHtml(equipment?.model || '')}"></div></div>
+                            <div class="form-group"><label>Numer seryjny *</label><input id="serial" required value="${escapeHtml(equipment?.serialNumber || '')}"></div>
+                            <div class="form-row"><div class="form-group"><label>Data kalibracji *</label><input type="date" id="cal-date" required value="${equipment?.calibrationDate || today}"></div>
+                            <div class="form-group"><label>Ważność kalibracji *</label><input type="date" id="cal-valid" required value="${equipment?.calibrationValidity || nextYear.toISOString().split('T')[0]}"></div></div>
+                            <div class="form-row"><div class="form-group"><label>Lokalizacja *</label><input id="loc" required value="${escapeHtml(equipment?.location || '')}"></div>
                             <div class="form-group"><label>Status</label><select id="stat"><option value="active">Aktywny</option><option value="calibration">W kalibracji</option><option value="unused">Nieużywany</option><option value="lost">Zagubiony</option><option value="damaged">Uszkodzony</option></select></div></div>
-                            <div class="form-group"><label>Uwagi</label><textarea id="notes" rows="2">${equipment?.notes || ''}</textarea></div>
+                            <div class="form-group"><label>Uwagi</label><textarea id="notes" rows="2">${escapeHtml(equipment?.notes || '')}</textarea></div>
+                            <div class="form-group">
+                                <label>Miniaturka sprzętu</label>
+                                <div class="thumbnail-controls">
+                                    <button type="button" class="btn btn-success" onclick="openCamera()">📸 Zrób zdjęcie</button>
+                                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('image-input').click()">📁 Wybierz z galerii</button>
+                                </div>
+                                <img id="image-preview" class="thumbnail-preview" src="${equipment?.imageUrl || ''}" ${equipment?.imageUrl ? 'style="display:block;"' : ''}>
+                                ${equipment?.imageUrl ? `<div class="thumbnail-controls"><button type="button" class="btn btn-danger" onclick="deleteEquipmentImage('${equipment.id}')">🗑️ Usuń obrazek</button></div>` : ''}
+                            </div>
                             <div class="modal-actions"><button type="button" class="btn" onclick="hideModal()">Anuluj</button><button type="submit" class="btn btn-success">Zapisz</button></div>
                         </form>
                     </div>
                 </div></div>`;
+            
             if(equipment) document.getElementById('stat').value = equipment.status;
             modalContainer.classList.remove('hidden');
-            if(focusField==='calibration-date') document.getElementById('cal-date').focus();
-            else if(focusField==='location') document.getElementById('loc').focus();
-            else document.getElementById('inv-num').focus();
-            currentEditingId = equipment?.id || null;
-            currentImageFile = null;
+            
+            const calDateInput = document.getElementById('cal-date');
+            const calValidInput = document.getElementById('cal-valid');
+            calDateInput.addEventListener('change', function() {
+                if (this.value) {
+                    const date = new Date(this.value);
+                    date.setFullYear(date.getFullYear() + 1);
+                    calValidInput.value = date.toISOString().split('T')[0];
+                }
+            });
+            
+            setTimeout(() => {
+                if (focusField === 'calibration-date') calDateInput.focus();
+                else if (focusField === 'location') document.getElementById('loc').focus();
+                else document.getElementById('inv-num').focus();
+            }, 100);
+        };
+        
+        window.deleteEquipmentImage = async (equipmentId) => {
+            if (!checkPermission()) return;
+            if (!confirm('Usunąć obrazek tego urządzenia?')) return;
+            const eq = window.equipmentList.find(i => i.id === equipmentId);
+            if (eq) {
+                eq.imageUrl = null;
+                await saveToFirebase();
+                const preview = document.getElementById('image-preview');
+                if (preview) preview.style.display = 'none';
+                showStatus('Obrazek usunięty', 'success');
+                if (modalContainer.classList.contains('hidden') === false) {
+                    hideModal();
+                    showEquipmentDetails(equipmentId);
+                }
+            }
         };
         
         window.saveEquipment = async () => {
@@ -1523,22 +1712,70 @@
             const loc = document.getElementById('loc').value.trim();
             const status = document.getElementById('stat').value;
             const notes = document.getElementById('notes').value.trim();
-            if(!invNum||!eqName||!manuf||!model||!serial||!calDate||!calValid||!loc) { showStatus('Wypełnij wszystkie pola','error'); return; }
+            
+            if(!invNum || !eqName || !manuf || !model || !serial || !calDate || !calValid || !loc) { 
+                showStatus('Wypełnij wszystkie wymagane pola','error'); 
+                return; 
+            }
+            
             const validDate = new Date(calValid);
             const today = new Date();
-            const days = Math.ceil((validDate - today)/(1000*3600*24));
-            const newEq = { id: currentEditingId || 'eq_'+Date.now()+'_'+Math.random().toString(36).substr(2,6), inventoryNumber: invNum, equipmentName: eqName, manufacturer: manuf, model, serialNumber: serial, calibrationDate: calDate, calibrationValidity: calValid, daysToExpiry: days, notes, location: loc, status, imageUrl: null };
-            const idx = window.equipmentList.findIndex(i=>i.id===newEq.id);
-            if(idx!==-1) window.equipmentList[idx]=newEq;
+            today.setHours(0,0,0,0);
+            validDate.setHours(0,0,0,0);
+            const days = Math.ceil((validDate - today) / (1000*3600*24));
+            
+            const existingEq = window.equipmentList.find(i => i.id === currentEditingId);
+            
+            let imageUrl = existingEq?.imageUrl || null;
+            
+            if (currentImageFile) {
+                try {
+                    showStatus('Kompresowanie obrazka...', 'info');
+                    imageUrl = await compressImageToBase64(currentImageFile, 800, 600, 0.7);
+                    if (imageUrl.length > 500000) {
+                        imageUrl = await compressImageToBase64(currentImageFile, 400, 300, 0.5);
+                    }
+                } catch (error) {
+                    console.error('Błąd kompresji:', error);
+                    showStatus('Błąd kompresji obrazka', 'error');
+                    return;
+                }
+            }
+            
+            const newEq = { 
+                id: currentEditingId || 'eq_'+Date.now()+'_'+Math.random().toString(36).substr(2,6), 
+                inventoryNumber: invNum, 
+                equipmentName: eqName, 
+                manufacturer: manuf, 
+                model, 
+                serialNumber: serial, 
+                calibrationDate: calDate, 
+                calibrationValidity: calValid, 
+                daysToExpiry: days, 
+                notes, 
+                location: loc, 
+                status, 
+                imageUrl: imageUrl
+            };
+            
+            const idx = window.equipmentList.findIndex(i => i.id === newEq.id);
+            if (idx !== -1) window.equipmentList[idx] = newEq;
             else window.equipmentList.push(newEq);
+            
             await saveToFirebase();
             hideModal();
-            showStatus('Zapisano','success');
+            showStatus('Zapisano pomyślnie', 'success');
         };
         
         const savedUser = localStorage.getItem('calibra_user');
-        if(savedUser) loginUser(JSON.parse(savedUser));
-        window.logout = logout;
+        if(savedUser) {
+            try {
+                const user = JSON.parse(savedUser);
+                if (authorizedUsers.find(u => u.username === user.username)) {
+                    loginUser(user);
+                }
+            } catch(e) {}
+        }
     </script>
 </body>
 </html>
