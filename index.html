@@ -46,7 +46,7 @@
         header {
             background: white;
             color: #2c3e50;
-            padding: 16px;
+            padding: 12px 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -116,7 +116,28 @@
             background-clip: text;
         }
         
-        /* Styl dla paska z datą aktualizacji */
+        .header-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .imp-exp-btn {
+            background: #e9ecef;
+            border: 1px solid #dee2e6;
+            color: #495057;
+            cursor: pointer;
+            font-size: 0.8rem;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        
+        .imp-exp-btn:hover, .imp-exp-btn:active {
+            background: #dee2e6;
+            transform: translateY(-1px);
+        }
+        
         .last-updated-bar {
             background: #f8f9fa;
             color: #6c757d;
@@ -349,6 +370,18 @@
             transform: translateY(-1px);
         }
         
+        .item-notes {
+            background: #fef3c7;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            color: #92400e;
+            margin-top: 4px;
+            word-break: break-word;
+            display: inline-block;
+            max-width: 100%;
+        }
+        
         .item-status {
             position: absolute;
             top: 12px;
@@ -367,6 +400,40 @@
         
         .item-status:hover, .item-status:active {
             transform: scale(1.1);
+        }
+        
+        /* Checkbox w prawym dolnym rogu */
+        .item-checkbox {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            z-index: 10;
+            background: white;
+            border-radius: 6px;
+            border: 2px solid #4a90e2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .item-checkbox.checked {
+            background: #4a90e2;
+            border-color: #4a90e2;
+        }
+        
+        .item-checkbox.checked::after {
+            content: '✓';
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .item-checkbox input {
+            display: none;
         }
         
         .status-days {
@@ -669,7 +736,6 @@
             padding: 0 16px 16px;
         }
         
-        /* Poprawiony styl dla miniaturek - bez ikony aparatu */
         .thumbnail-container {
             position: absolute;
             left: 12px;
@@ -690,10 +756,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-        }
-        
-        .thumbnail-placeholder {
-            display: none; /* Ukrywamy placeholder */
         }
         
         .thumbnail-upload {
@@ -733,7 +795,6 @@
             font-size: 0.8rem;
         }
         
-        /* Kamera */
         .camera-modal {
             position: fixed;
             top: 0;
@@ -848,7 +909,6 @@
             backdrop-filter: blur(5px);
         }
         
-        /* Ekran logowania */
         .login-screen {
             position: fixed;
             top: 0;
@@ -959,10 +1019,7 @@
             }
             
             header {
-                padding: 12px;
-                flex-direction: column;
-                gap: 10px;
-                text-align: center;
+                padding: 10px 12px;
             }
             
             .logo {
@@ -974,111 +1031,20 @@
                 font-size: 1.4rem;
             }
             
-            .modal-overlay {
-                padding: 5px;
+            .imp-exp-btn {
+                padding: 4px 10px;
+                font-size: 0.75rem;
             }
             
-            .modal-content {
-                margin-top: 10px;
-                max-height: 95vh;
+            .item-checkbox {
+                width: 24px;
+                height: 24px;
+                bottom: 6px;
+                right: 6px;
             }
             
-            .equipment-item {
-                padding: 10px;
-                margin-bottom: 5px;
-                min-height: 65px;
-            }
-            
-            .item-number {
-                font-size: 0.9rem;
-            }
-            
-            .item-name {
-                font-size: 0.8rem;
-            }
-            
-            .item-details {
-                font-size: 0.7rem;
-                gap: 4px;
-            }
-            
-            .item-status {
-                top: 10px;
-                right: 10px;
-                font-size: 0.65rem;
-                min-width: 30px;
-            }
-            
-            .fab {
-                bottom: 20px;
-                right: 20px;
-                width: 56px;
-                height: 56px;
-                font-size: 1.6rem;
-            }
-            
-            .search-box {
-                top: 2px;
-            }
-            
-            .detail-row {
-                flex-direction: column;
-            }
-            
-            .detail-label {
-                width: 100%;
-                margin-bottom: 4px;
-            }
-            
-            .filters-container {
-                margin: 8px 12px;
-                gap: 6px;
-            }
-            
-            .filter-select {
-                min-width: 110px;
-                padding: 8px;
-            }
-            
-            .form-row {
-                flex-direction: column;
-                gap: 12px;
-            }
-            
-            .action-bar {
-                margin: 8px 12px;
-                flex-wrap: wrap;
-            }
-            
-            .action-bar .btn {
-                flex: 1 1 calc(33.333% - 5px);
-                min-width: 0;
-                padding: 10px 6px;
-                font-size: 0.8rem;
-            }
-            
-            .modal-actions-top {
-                flex-direction: column;
-                gap: 8px;
-            }
-            
-            .main-content {
-                padding: 0 12px 12px;
-            }
-            
-            .status-message {
-                margin: 8px 12px;
-            }
-            
-            .thumbnail-container {
-                width: 36px;
-                height: 36px;
-                left: 10px;
-                top: 10px;
-            }
-            
-            .item-with-thumbnail {
-                padding-left: 56px !important;
+            .item-checkbox.checked::after {
+                font-size: 14px;
             }
             
             .camera-btn {
@@ -1086,79 +1052,23 @@
                 height: 50px;
                 font-size: 1.3rem;
             }
-            
-            .camera-controls {
-                bottom: 20px;
-                gap: 15px;
+        }
+        
+        @media (max-width: 380px) {
+            .header-buttons {
+                gap: 4px;
             }
-            
-            .login-box {
-                padding: 20px;
-            }
-            
-            .user-info {
-                width: 100%;
-                justify-content: center;
-                flex-wrap: wrap;
-                gap: 8px;
-            }
-            
-            #current-user {
-                font-size: 0.8rem;
-                white-space: nowrap;
-            }
-            
-            .logout-btn {
+            .imp-exp-btn {
                 padding: 4px 8px;
-                font-size: 0.75rem;
-            }
-            
-            .last-updated-bar {
-                padding: 6px 12px;
                 font-size: 0.7rem;
             }
-        }
-        
-        @media (max-width: 320px) {
             .user-info {
-                flex-direction: column;
-                gap: 6px;
-            }
-            
-            .logout-btn {
-                padding: 3px 6px;
-                font-size: 0.7rem;
-            }
-            
-            .action-bar .btn {
-                flex: 1 1 calc(50% - 4px);
-            }
-        }
-        
-        /* Obsługa zoomu dwoma palcami */
-        body.zooming {
-            touch-action: pan-x pan-y;
-        }
-        
-        /* Dla bardzo małych ekranów */
-        @media (max-height: 600px) {
-            .equipment-item {
-                padding: 8px;
-                min-height: 60px;
-            }
-            
-            .modal-content {
-                max-height: 85vh;
-            }
-            
-            .camera-controls {
-                bottom: 15px;
+                font-size: 0.75rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Ekran logowania -->
     <div id="login-screen" class="login-screen">
         <div class="login-box">
             <div class="login-logo">
@@ -1166,21 +1076,14 @@
             </div>
             <div class="login-title">Calibra</div>
             <div class="login-subtitle">System zarządzania sprzętem</div>
-            
             <input type="text" id="login-username" class="login-input" placeholder="Nazwa użytkownika" autocomplete="username">
             <input type="password" id="login-password" class="login-input" placeholder="Hasło" autocomplete="current-password">
-            
             <button class="login-btn" id="login-button">Zaloguj się</button>
-            
             <div id="login-error" class="login-error"></div>
-            
-            <div style="margin-top: 20px; font-size: 0.8rem; color: #6c757d;">
-                Skontaktuj się z administratorem aby otrzymać dostęp
-            </div>
+            <div style="margin-top: 20px; font-size: 0.8rem; color: #6c757d;">Skontaktuj się z administratorem aby otrzymać dostęp</div>
         </div>
     </div>
 
-    <!-- Główna aplikacja -->
     <div id="app-container" class="container hidden">
         <header>
             <div class="logo-container">
@@ -1189,14 +1092,16 @@
                 </div>
                 <div class="app-name"><span>Calibra</span></div>
             </div>
-            
+            <div class="header-buttons">
+                <button class="imp-exp-btn" id="import-excel-btn">IMP</button>
+                <button class="imp-exp-btn" id="export-excel-btn">EXP</button>
+            </div>
             <div class="user-info">
                 <span id="current-user"></span>
                 <button class="logout-btn" id="logout-button" onclick="logout()">Wyloguj</button>
             </div>
         </header>
         
-        <!-- Dodaj tę sekcję po headerze -->
         <div id="last-updated" class="last-updated-bar">
             Ostatnia aktualizacja: <span id="last-updated-time">-</span>
         </div>
@@ -1204,8 +1109,6 @@
         <div id="status-message" class="status-message"></div>
         
         <div class="action-bar">
-            <button class="btn" id="export-excel">Eksportuj</button>
-            <button class="btn" id="import-excel">Importuj</button>
             <button class="btn btn-danger" id="clear-all">Wyczyść</button>
         </div>
         
@@ -1231,1303 +1134,16 @@
         </div>
         
         <div class="main-content">
-            <div id="equipment-list">
-                <!-- Lista będzie generowana dynamicznie -->
-            </div>
+            <div id="equipment-list"></div>
         </div>
         
-        <div id="modal-container">
-            <!-- Modal będzie generowany dynamicznie -->
-        </div>
-        
-        <!-- Kamera -->
-        <div id="camera-container" class="hidden">
-            <!-- Kamera będzie generowana dynamicznie -->
-        </div>
+        <div id="modal-container"></div>
+        <div id="camera-container" class="hidden"></div>
         
         <button class="fab" id="add-equipment">+</button>
     </div>
- <!-- Biblioteka do obsługi Excel -->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
-    <script>
-        // Zmienne globalne
-        let equipmentList = [];
-        let currentEditingId = null;
-        let currentImageFile = null;
-        let cameraStream = null;
-        let useFrontCamera = false;
-        let currentUser = null;
-
-        // Elementy DOM
-        const equipmentListDiv = document.getElementById('equipment-list');
-        const modalContainer = document.getElementById('modal-container');
-        const cameraContainer = document.getElementById('camera-container');
-        const searchInput = document.getElementById('search-input');
-        const statusMessage = document.getElementById('status-message');
-        const excelInput = document.getElementById('excel-input');
-        const imageInput = document.getElementById('image-input');
-        const addEquipmentBtn = document.getElementById('add-equipment');
-        const exportExcelBtn = document.getElementById('export-excel');
-        const importExcelBtn = document.getElementById('import-excel');
-        const clearAllBtn = document.getElementById('clear-all');
-        const filterLocation = document.getElementById('filter-location');
-        const filterStatus = document.getElementById('filter-status');
-        const lastUpdatedTime = document.getElementById('last-updated-time');
-
-        // Elementy logowania
-        const loginScreen = document.getElementById('login-screen');
-        const appContainer = document.getElementById('app-container');
-        const loginButton = document.getElementById('login-button');
-        const logoutButton = document.getElementById('logout-button');
-        const loginUsername = document.getElementById('login-username');
-        const loginPassword = document.getElementById('login-password');
-        const loginError = document.getElementById('login-error');
-        const currentUserSpan = document.getElementById('current-user');
-
-        // Lista uprawnionych użytkowników (zmienione zgodnie z instrukcją)
-        const authorizedUsers = [
-            { username: "t.ludwiczak", password: "samsung1", name: "t.ludwiczak", role: "admin" },
-            { username: "r.gehrke", password: "samsung2026", name: "r.gehrke", role: "admin" },
-            { username: "user", password: "samsung26", name: "user", role: "viewer" }
-        ];
-
-        // Funkcja do kompresji obrazka do Base64
-        function compressImageToBase64(file, maxWidth, maxHeight, quality) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = new Image();
-                    img.onload = function() {
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-                        
-                        let width = img.width;
-                        let height = img.height;
-                        
-                        // Zachowaj proporcje
-                        if (width > height) {
-                            if (width > maxWidth) {
-                                height = Math.round((height * maxWidth) / width);
-                                width = maxWidth;
-                            }
-                        } else {
-                            if (height > maxHeight) {
-                                width = Math.round((width * maxHeight) / height);
-                                height = maxHeight;
-                            }
-                        }
-                        
-                        canvas.width = width;
-                        canvas.height = height;
-                        ctx.drawImage(img, 0, 0, width, height);
-                        
-                        const base64 = canvas.toDataURL('image/jpeg', quality);
-                        console.log(`Obrazek skompresowany: ${width}x${height}, rozmiar: ${Math.round(base64.length / 1024)}KB`);
-                        resolve(base64);
-                    };
-                    img.onerror = reject;
-                    img.src = e.target.result;
-                };
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
-        }
-
-        // Sprawdzenie uprawnień
-        function checkPermission() {
-            if (!currentUser) return false;
-            if (currentUser.role === 'viewer') {
-                showStatus('Brak uprawnień do wykonania tej operacji', 'error');
-                return false;
-            }
-            return true;
-        }
-
-        // Inicjalizacja aplikacji
-        document.addEventListener('DOMContentLoaded', function() {
-            // Sprawdź czy użytkownik jest już zalogowany (z localStorage)
-            const savedUser = localStorage.getItem('calibra_user');
-            if (savedUser) {
-                try {
-                    const user = JSON.parse(savedUser);
-                    loginUser(user);
-                } catch (e) {
-                    localStorage.removeItem('calibra_user');
-                }
-            }
-            
-            setupEventListeners();
-            
-            // Ustawienie obsługi zoomu dwoma palcami
-            setupPinchZoom();
-        });
-
-        // Logowanie użytkownika
-        function loginUser(user) {
-            currentUser = user;
-            currentUserSpan.textContent = `Witaj, ${user.name}`;
-            loginScreen.classList.add('hidden');
-            appContainer.classList.remove('hidden');
-            
-            // Zapisz w localStorage
-            localStorage.setItem('calibra_user', JSON.stringify(user));
-            
-            // Ukryj przyciski dla użytkownika z rolą viewer
-            if (user.role === 'viewer') {
-                document.getElementById('export-excel').style.display = 'none';
-                document.getElementById('import-excel').style.display = 'none';
-                document.getElementById('clear-all').style.display = 'none';
-                document.getElementById('add-equipment').style.display = 'none';
-            } else {
-                document.getElementById('export-excel').style.display = 'block';
-                document.getElementById('import-excel').style.display = 'block';
-                document.getElementById('clear-all').style.display = 'block';
-                document.getElementById('add-equipment').style.display = 'block';
-            }
-        }
-
-        // Wylogowanie
-        function logout() {
-            if (confirm('Czy na pewno chcesz się wylogować?')) {
-                currentUser = null;
-                localStorage.removeItem('calibra_user');
-                loginScreen.classList.remove('hidden');
-                appContainer.classList.add('hidden');
-                loginUsername.value = '';
-                loginPassword.value = '';
-                loginError.style.display = 'none';
-            }
-        }
-
-        // Ustawienie nasłuchiwaczy zdarzeń
-        function setupEventListeners() {
-            // Logowanie
-            loginButton.addEventListener('click', function() {
-                const username = loginUsername.value.trim();
-                const password = loginPassword.value.trim();
-                
-                if (!username || !password) {
-                    loginError.textContent = 'Wpisz nazwę użytkownika i hasło';
-                    loginError.style.display = 'block';
-                    return;
-                }
-                
-                // Sprawdź czy użytkownik jest na liście
-                const user = authorizedUsers.find(u => 
-                    u.username === username && u.password === password
-                );
-                
-                if (user) {
-                    loginUser(user);
-                } else {
-                    loginError.textContent = 'Nieprawidłowa nazwa użytkownika lub hasło';
-                    loginError.style.display = 'block';
-                }
-            });
-            
-            // Logowanie po naciśnięciu Enter
-            loginPassword.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    loginButton.click();
-                }
-            });
-            
-            // Reszta event listenerów tylko jeśli zalogowany
-            addEquipmentBtn.addEventListener('click', showAddEquipmentForm);
-            
-            exportExcelBtn.addEventListener('click', exportToExcel);
-            importExcelBtn.addEventListener('click', importFromExcel);
-            clearAllBtn.addEventListener('click', clearAllData);
-            excelInput.addEventListener('change', handleExcelImport);
-            
-            searchInput.addEventListener('input', renderEquipmentList);
-            filterLocation.addEventListener('change', renderEquipmentList);
-            filterStatus.addEventListener('change', renderEquipmentList);
-            
-            // Obsługa przesyłania obrazków
-            imageInput.addEventListener('change', handleImageUpload);
-        }
-
-        // Obsługa zoomu dwoma palcami
-        function setupPinchZoom() {
-            let initialDistance = 0;
-            let currentFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
-            
-            document.addEventListener('touchstart', function(e) {
-                if (e.touches.length === 2) {
-                    initialDistance = Math.hypot(
-                        e.touches[0].clientX - e.touches[1].clientX,
-                        e.touches[0].clientY - e.touches[1].clientY
-                    );
-                    document.body.classList.add('zooming');
-                }
-            });
-            
-            document.addEventListener('touchmove', function(e) {
-                if (e.touches.length === 2 && initialDistance > 0) {
-                    e.preventDefault();
-                    
-                    const currentDistance = Math.hypot(
-                        e.touches[0].clientX - e.touches[1].clientX,
-                        e.touches[0].clientY - e.touches[1].clientY
-                    );
-                    
-                    const scale = currentDistance / initialDistance;
-                    const newFontSize = Math.max(12, Math.min(24, currentFontSize * scale));
-                    
-                    document.documentElement.style.fontSize = newFontSize + 'px';
-                }
-            });
-            
-            document.addEventListener('touchend', function(e) {
-                if (e.touches.length < 2) {
-                    initialDistance = 0;
-                    currentFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
-                    document.body.classList.remove('zooming');
-                }
-            });
-            
-            // Reset zoom przy dwukrotnym kliknięciu
-            document.addEventListener('dblclick', function(e) {
-                if (e.target === document.body || e.target.classList.contains('container')) {
-                    document.documentElement.style.fontSize = '';
-                }
-            });
-        }
-
-        // Czyszczenie wszystkich danych
-        function clearAllData() {
-            if (!checkPermission()) return;
-            
-            if (equipmentList.length === 0) {
-                showStatus('Brak danych do usunięcia', 'error');
-                return;
-            }
-
-            if (confirm('Czy na pewno chcesz usunąć WSZYSTKIE dane? Tej operacji nie można cofnąć!')) {
-                // Usuń dane z Firebase
-                window.clearFirebase();
-            }
-        }
-
-        // Eksport do Excel
-        function exportToExcel() {
-            if (!checkPermission()) return;
-            
-            if (equipmentList.length === 0) {
-                showStatus('Brak danych do eksportu', 'error');
-                return;
-            }
-
-            try {
-                // Przygotowanie danych do eksportu
-                const exportData = equipmentList.map(item => {
-                    return {
-                        'Numer ewidencyjny': item.inventoryNumber,
-                        'Nazwa sprzętu': item.equipmentName,
-                        'Producent': item.manufacturer,
-                        'Model': item.model,
-                        'Numer seryjny': item.serialNumber,
-                        'Data kalibracji': item.calibrationDate,
-                        'Ważność kalibracji': item.calibrationValidity,
-                        'Dni do wygaśnięcia': item.daysToExpiry,
-                        'Lokalizacja': item.location,
-                        'Status': getStatusText(item.status),
-                        'Miniaturka': item.imageUrl ? 'TAK' : 'NIE',
-                        'Uwagi': item.notes || ''
-                    };
-                });
-
-                // Tworzenie arkusza
-                const ws = XLSX.utils.json_to_sheet(exportData);
-                
-                // Ustawienie właściwości komórek z datami
-                const range = XLSX.utils.decode_range(ws['!ref']);
-                const dateColumns = [5, 6];
-                
-                for (let R = range.s.r + 1; R <= range.e.r; ++R) {
-                    dateColumns.forEach(col => {
-                        const cellAddress = XLSX.utils.encode_cell({r: R, c: col});
-                        if (ws[cellAddress]) {
-                            const dateStr = ws[cellAddress].v;
-                            if (dateStr && typeof dateStr === 'string' && dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) {
-                                const parts = dateStr.split('-');
-                                const year = parseInt(parts[0]);
-                                const month = parseInt(parts[1]) - 1;
-                                const day = parseInt(parts[2]);
-                                const date = new Date(year, month, day, 12, 0, 0);
-                                
-                                ws[cellAddress].v = date;
-                                ws[cellAddress].t = 'd';
-                                ws[cellAddress].z = 'dd"."mm"."yyyy';
-                                ws[cellAddress].w = formatDateToDDMMYYYY(dateStr);
-                            }
-                        }
-                    });
-                }
-                
-                // Szerokości kolumn
-                const colWidths = [
-                    {wch: 18}, {wch: 25}, {wch: 15}, {wch: 15}, {wch: 15},
-                    {wch: 15}, {wch: 15}, {wch: 12}, {wch: 15}, {wch: 12},
-                    {wch: 12}, {wch: 25}
-                ];
-                ws['!cols'] = colWidths;
-                
-                const wb = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(wb, ws, 'Sprzęt');
-
-                // Eksport do pliku
-                const today = new Date();
-                const dateStr = today.toISOString().split('T')[0];
-                XLSX.writeFile(wb, `calibra_export_${dateStr}.xlsx`);
-                
-                showStatus('Dane wyeksportowane', 'success');
-            } catch (error) {
-                console.error('Błąd eksportu:', error);
-                showStatus('Błąd podczas eksportu danych', 'error');
-            }
-        }
-
-        // Formatowanie daty do DD.MM.YYYY
-        function formatDateToDDMMYYYY(dateString) {
-            if (!dateString) return '';
-            
-            const date = new Date(dateString);
-            if (isNaN(date.getTime())) {
-                if (dateString.match(/^\d{4}-\d{2}-\d{2}$/)) {
-                    const parts = dateString.split('-');
-                    return `${parts[2]}.${parts[1]}.${parts[0]}`;
-                }
-                return dateString;
-            }
-            
-            const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const year = date.getFullYear();
-            return `${day}.${month}.${year}`;
-        }
-
-        // Import z Excel
-        function importFromExcel() {
-            if (!checkPermission()) return;
-            
-            excelInput.click();
-        }
-
-        // Otwarcie kamery
-        function openCamera() {
-            if (!checkPermission()) return;
-            
-            cameraContainer.innerHTML = `
-                <div class="camera-modal">
-                    <div class="camera-flash" id="camera-flash"></div>
-                    <video class="camera-preview" id="camera-preview" autoplay playsinline></video>
-                    <div class="camera-top-bar">
-                        <button class="camera-close camera-btn" onclick="closeCamera()">✕</button>
-                        <button class="camera-switch" onclick="switchCamera()">🔄</button>
-                    </div>
-                    <div class="camera-controls">
-                        <button class="camera-capture camera-btn" onclick="capturePhoto()">📸</button>
-                    </div>
-                </div>
-            `;
-            
-            cameraContainer.classList.remove('hidden');
-            
-            // Uruchom kamerę
-            startCamera();
-        }
-
-        // Uruchomienie kamery
-        async function startCamera() {
-            try {
-                // Zatrzymaj poprzedni strumień jeśli istnieje
-                if (cameraStream) {
-                    cameraStream.getTracks().forEach(track => track.stop());
-                }
-                
-                // Ustawienia kamery
-                const constraints = {
-                    video: {
-                        facingMode: useFrontCamera ? "user" : "environment",
-                        width: { ideal: 1920 },
-                        height: { ideal: 1080 }
-                    },
-                    audio: false
-                };
-                
-                // Uzyskaj dostęp do kamery
-                cameraStream = await navigator.mediaDevices.getUserMedia(constraints);
-                
-                // Podłącz strumień do elementu video
-                const cameraPreview = document.getElementById('camera-preview');
-                cameraPreview.srcObject = cameraStream;
-                
-            } catch (error) {
-                console.error('Błąd kamery:', error);
-                showStatus('Nie można uzyskać dostępu do kamery', 'error');
-                closeCamera();
-            }
-        }
-
-        // Zamknięcie kamery
-        function closeCamera() {
-            // Zatrzymaj strumień kamery
-            if (cameraStream) {
-                cameraStream.getTracks().forEach(track => track.stop());
-                cameraStream = null;
-            }
-            
-            // Ukryj kontener kamery
-            cameraContainer.classList.add('hidden');
-            cameraContainer.innerHTML = '';
-        }
-
-        // Przełączanie między kamerami
-        function switchCamera() {
-            useFrontCamera = !useFrontCamera;
-            startCamera();
-        }
-
-        // Zrobienie zdjęcia
-        function capturePhoto() {
-            const cameraPreview = document.getElementById('camera-preview');
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-            
-            // Ustaw rozmiar canvas na rozmiar wideo
-            canvas.width = cameraPreview.videoWidth;
-            canvas.height = cameraPreview.videoHeight;
-            
-            // Narysuj klatkę z wideo na canvas
-            context.drawImage(cameraPreview, 0, 0, canvas.width, canvas.height);
-            
-            // Efekt flesza
-            const flash = document.getElementById('camera-flash');
-            if (flash) {
-                flash.classList.remove('flash-animation');
-                void flash.offsetWidth; // Trigger reflow
-                flash.classList.add('flash-animation');
-            }
-            
-            // Konwertuj canvas na plik (blob)
-            canvas.toBlob(function(blob) {
-                // Utwórz plik z blob
-                const fileName = `photo_${Date.now()}.jpg`;
-                currentImageFile = new File([blob], fileName, { type: 'image/jpeg' });
-                
-                // Podgląd zdjęcia w formularzu
-                const imagePreview = document.getElementById('image-preview');
-                if (imagePreview) {
-                    const url = URL.createObjectURL(blob);
-                    imagePreview.src = url;
-                    imagePreview.style.display = 'block';
-                }
-                
-                // Zamknij kamerę
-                closeCamera();
-                
-                showStatus('Zdjęcie zrobione', 'success');
-            }, 'image/jpeg', 0.8); // jakość 80%
-        }
-
-        // Obsługa przesyłania obrazka z galerii
-        function handleImageUpload(event) {
-            if (!checkPermission()) return;
-            
-            const file = event.target.files[0];
-            if (!file) return;
-            
-            // Sprawdź rozmiar pliku (max 5MB)
-            if (file.size > 5 * 1024 * 1024) {
-                showStatus('Plik jest za duży (max 5MB)', 'error');
-                return;
-            }
-            
-            // Sprawdź typ pliku
-            if (!file.type.match('image.*')) {
-                showStatus('Wybierz plik graficzny', 'error');
-                return;
-            }
-            
-            currentImageFile = file;
-            
-            // Podgląd obrazka
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const preview = document.getElementById('image-preview');
-                if (preview) {
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                }
-            };
-            reader.readAsDataURL(file);
-        }
-
-        // Obsługa importu z pliku Excel
-        function handleExcelImport(event) {
-            if (!checkPermission()) return;
-            
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = new Uint8Array(e.target.result);
-                    const workbook = XLSX.read(data, { 
-                        type: 'array', 
-                        cellDates: false,
-                        cellText: true,
-                        raw: false
-                    });
-                    
-                    const firstSheetName = workbook.SheetNames[0];
-                    const worksheet = workbook.Sheets[firstSheetName];
-                    const jsonData = XLSX.utils.sheet_to_json(worksheet, { 
-                        raw: false,
-                        defval: ''
-                    });
-                    
-                    if (jsonData.length === 0) {
-                        showStatus('Plik nie zawiera danych', 'error');
-                        return;
-                    }
-
-                    const importedEquipment = jsonData.map(item => {
-                        const inventoryNumber = item['Numer ewidencyjny'] || item['inventoryNumber'] || '';
-                        const equipmentName = item['Nazwa sprzętu'] || item['equipmentName'] || '';
-                        const manufacturer = item['Producent'] || item['manufacturer'] || '';
-                        const model = item['Model'] || item['model'] || '';
-                        const serialNumber = item['Numer seryjny'] || item['serialNumber'] || '';
-                        
-                        const calibrationDateRaw = item['Data kalibracji'] || item['calibrationDate'] || '';
-                        const calibrationValidityRaw = item['Ważność kalibracji'] || item['calibrationValidity'] || '';
-                        
-                        let calibrationDate = parseDateFromExcelText(calibrationDateRaw);
-                        let calibrationValidity = parseDateFromExcelText(calibrationValidityRaw);
-                        
-                        const location = item['Lokalizacja'] || item['location'] || '';
-                        const status = parseStatus(item['Status'] || item['status'] || 'active');
-                        const notes = item['Uwagi'] || item['notes'] || '';
-                        const hasImage = item['Miniaturka'] || false;
-
-                        // Obliczanie dni do wygaśnięcia
-                        let daysToExpiry = 0;
-                        if (calibrationValidity) {
-                            const validityDate = parseDateStringToDate(calibrationValidity);
-                            const today = new Date();
-                            today.setHours(0, 0, 0, 0);
-                            const timeDiff = validityDate.getTime() - today.getTime();
-                            daysToExpiry = Math.ceil(timeDiff / (1000 * 3600 * 24));
-                        }
-
-                        return {
-                            id: 'eq_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
-                            inventoryNumber: inventoryNumber.toString(),
-                            equipmentName: equipmentName.toString(),
-                            manufacturer: manufacturer.toString(),
-                            model: model.toString(),
-                            serialNumber: serialNumber.toString(),
-                            calibrationDate: calibrationDate,
-                            calibrationValidity: calibrationValidity,
-                            daysToExpiry: daysToExpiry,
-                            notes: notes.toString(),
-                            location: location.toString(),
-                            status: status,
-                            imageUrl: null
-                        };
-                    }).filter(item => item.inventoryNumber && item.equipmentName);
-
-                    if (importedEquipment.length === 0) {
-                        showStatus('Brak poprawnych danych', 'error');
-                        return;
-                    }
-
-                    const importOption = confirm(`Znaleziono ${importedEquipment.length} pozycji. Dodaj do istniejących danych? (OK - dodaj, Anuluj - zastąp)`);
-                    
-                    if (importOption) {
-                        equipmentList = [...equipmentList, ...importedEquipment];
-                    } else {
-                        equipmentList = importedEquipment;
-                    }
-
-                    // Zapisz do Firebase
-                    window.saveToFirebase();
-                    
-                    showStatus(`Zaimportowano ${importedEquipment.length} pozycji`, 'success');
-                    
-                } catch (error) {
-                    console.error('Błąd importu:', error);
-                    showStatus('Błąd podczas importu: ' + error.message, 'error');
-                }
-            };
-            
-            reader.onerror = function() {
-                showStatus('Błąd wczytywania pliku', 'error');
-            };
-            
-            reader.readAsArrayBuffer(file);
-            excelInput.value = '';
-        }
-
-        // Funkcja do parsowania dat z Excela
-        function parseDateFromExcelText(dateValue) {
-            if (!dateValue) return new Date().toISOString().split('T')[0];
-            
-            if (typeof dateValue === 'string' && dateValue.match(/^\d{4}-\d{2}-\d{2}$/)) {
-                return dateValue;
-            }
-            
-            if (dateValue instanceof Date) {
-                const year = dateValue.getFullYear();
-                const month = String(dateValue.getMonth() + 1).padStart(2, '0');
-                const day = String(dateValue.getDate()).padStart(2, '0');
-                return `${year}-${month}-${day}`;
-            }
-            
-            if (typeof dateValue === 'string') {
-                const cleanValue = dateValue.trim();
-                
-                if (cleanValue.match(/^\d{1,2}\.\d{1,2}\.\d{4}$/)) {
-                    const parts = cleanValue.split('.');
-                    const day = parts[0].padStart(2, '0');
-                    const month = parts[1].padStart(2, '0');
-                    const year = parts[2];
-                    return `${year}-${month}-${day}`;
-                }
-                
-                if (cleanValue.match(/^\d{1,2}\/\d{1,2}\/\d{4}$/)) {
-                    const parts = cleanValue.split('/');
-                    const day = parts[0].padStart(2, '0');
-                    const month = parts[1].padStart(2, '0');
-                    const year = parts[2];
-                    return `${year}-${month}-${day}`;
-                }
-                
-                if (cleanValue.match(/^\d{4}\.\d{1,2}\.\d{1,2}$/)) {
-                    const parts = cleanValue.split('.');
-                    const year = parts[0];
-                    const month = parts[1].padStart(2, '0');
-                    const day = parts[2].padStart(2, '0');
-                    return `${year}-${month}-${day}`;
-                }
-            }
-            
-            return new Date().toISOString().split('T')[0];
-        }
-
-        // Konwersja stringa daty na obiekt Date
-        function parseDateStringToDate(dateString) {
-            if (!dateString) return new Date();
-            
-            if (dateString.match(/^\d{4}-\d{2}-\d{2}$/)) {
-                const parts = dateString.split('-');
-                const year = parseInt(parts[0]);
-                const month = parseInt(parts[1]) - 1;
-                const day = parseInt(parts[2]);
-                return new Date(year, month, day, 12, 0, 0);
-            }
-            
-            return new Date(dateString);
-        }
-
-        // Parsowanie statusu
-        function parseStatus(statusString) {
-            const statusMap = {
-                'aktywny': 'active',
-                'w kalibracji': 'calibration',
-                'nieużywany': 'unused',
-                'zagubiony': 'lost',
-                'uszkodzony': 'damaged',
-                'active': 'active',
-                'calibration': 'calibration',
-                'unused': 'unused',
-                'lost': 'lost',
-                'damaged': 'damaged'
-            };
-            
-            const lowerStatus = statusString.toLowerCase();
-            return statusMap[lowerStatus] || 'active';
-        }
-
-        // Pokazanie formularza dodawania nowego sprzętu
-        function showAddEquipmentForm() {
-            if (!checkPermission()) return;
-            
-            currentEditingId = null;
-            currentImageFile = null;
-            showEquipmentForm('Dodaj nowy sprzęt');
-        }
-
-        // Pokazanie formularza edycji/dodawania sprzętu
-        function showEquipmentForm(title, equipment = null, focusField = null) {
-            const today = new Date().toISOString().split('T')[0];
-            const nextYear = new Date();
-            nextYear.setFullYear(nextYear.getFullYear() + 1);
-            const nextYearStr = nextYear.toISOString().split('T')[0];
-            
-            modalContainer.innerHTML = `
-                <div class="modal-overlay">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <div class="modal-title">${title}</div>
-                            <button class="close-modal" onclick="hideModal()">×</button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="equipment-form-modal" onsubmit="event.preventDefault(); saveEquipment();">
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="inventory-number-modal">Numer ewidencyjny</label>
-                                        <input type="text" id="inventory-number-modal" required value="${equipment ? equipment.inventoryNumber : 'BCH8-OQCREF-'}">
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="equipment-name-modal">Nazwa sprzętu</label>
-                                        <input type="text" id="equipment-name-modal" required value="${equipment ? equipment.equipmentName : ''}">
-                                </div>
-                                
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="manufacturer-modal">Producent</label>
-                                        <input type="text" id="manufacturer-modal" required value="${equipment ? equipment.manufacturer : ''}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="model-modal">Model</label>
-                                        <input type="text" id="model-modal" required value="${equipment ? equipment.model : ''}">
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="serial-number-modal">Numer seryjny</label>
-                                        <input type="text" id="serial-number-modal" required value="${equipment ? equipment.serialNumber : ''}">
-                                </div>
-                                
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="calibration-date-modal">Data kalibracji</label>
-                                        <input type="date" id="calibration-date-modal" required value="${equipment ? equipment.calibrationDate : today}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="calibration-validity-modal">Ważność kalibracji</label>
-                                        <input type="date" id="calibration-validity-modal" required value="${equipment ? equipment.calibrationValidity : nextYearStr}">
-                                    </div>
-                                </div>
-                                
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="location-modal">Lokalizacja</label>
-                                        <input type="text" id="location-modal" required value="${equipment ? equipment.location : ''}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="status-modal">Status</label>
-                                        <select id="status-modal" required>
-                                            <option value="active" ${equipment && equipment.status === 'active' ? 'selected' : ''}>Aktywny</option>
-                                            <option value="calibration" ${equipment && equipment.status === 'calibration' ? 'selected' : ''}>W kalibracji</option>
-                                            <option value="unused" ${equipment && equipment.status === 'unused' ? 'selected' : ''}>Nieużywany</option>
-                                            <option value="lost" ${equipment && equipment.status === 'lost' ? 'selected' : ''}>Zagubiony</option>
-                                            <option value="damaged" ${equipment && equipment.status === 'damaged' ? 'selected' : ''}>Uszkodzony</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label>Miniaturka sprzętu</label>
-                                    <div class="thumbnail-controls">
-                                        <button type="button" class="btn btn-success" onclick="openCamera()">📸 Zrób zdjęcie</button>
-                                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('image-input').click()">📁 Wybierz z galerii</button>
-                                    </div>
-                                    <img id="image-preview" class="thumbnail-preview" 
-                                        src="${equipment && equipment.imageUrl ? equipment.imageUrl : ''}" 
-                                        ${equipment && equipment.imageUrl ? 'style="display: block;"' : ''}>
-                                    
-                                    ${equipment && equipment.imageUrl ? `
-                                        <div class="thumbnail-controls">
-                                            <button type="button" class="btn btn-danger" onclick="deleteEquipmentImage('${equipment.id}')">🗑️ Usuń obrazek</button>
-                                        </div>
-                                    ` : ''}
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="notes-modal">Uwagi</label>
-                                    <textarea id="notes-modal" rows="2">${equipment ? equipment.notes : ''}</textarea>
-                                </div>
-                                
-                                <div class="modal-actions">
-                                    <button type="button" class="btn" onclick="hideModal()">Anuluj</button>
-                                    ${currentUser && currentUser.role === 'admin' ? '<button type="submit" class="btn btn-success">Zapisz</button>' : ''}
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            modalContainer.classList.remove('hidden');
-            
-            // Ustawienie automatycznego ustawiania daty ważności
-            const calibrationDateInput = document.getElementById('calibration-date-modal');
-            const calibrationValidityInput = document.getElementById('calibration-validity-modal');
-            
-            calibrationDateInput.addEventListener('change', function() {
-                if (this.value) {
-                    const calibrationDate = new Date(this.value);
-                    const validityDate = new Date(calibrationDate);
-                    validityDate.setFullYear(validityDate.getFullYear() + 1);
-                    calibrationValidityInput.value = validityDate.toISOString().split('T')[0];
-                }
-            });
-            
-            // Auto-focus na wybrane pole
-            setTimeout(() => {
-                if (focusField === 'calibration-date') {
-                    calibrationDateInput.focus();
-                } else if (focusField === 'location') {
-                    document.getElementById('location-modal').focus();
-                } else {
-                    const inventoryNumberInput = document.getElementById('inventory-number-modal');
-                    inventoryNumberInput.focus();
-                    inventoryNumberInput.setSelectionRange(inventoryNumberInput.value.length, inventoryNumberInput.value.length);
-                }
-            }, 100);
-        }
-
-        // Usuwanie obrazka urządzenia
-        async function deleteEquipmentImage(equipmentId) {
-            if (!checkPermission()) return;
-            
-            if (!confirm('Usunąć obrazek tego urządzenia?')) return;
-            
-            const equipment = equipmentList.find(item => item.id === equipmentId);
-            if (!equipment || !equipment.imageUrl) return;
-            
-            try {
-                // Usuń z Firebase (tylko ustaw na null)
-                equipment.imageUrl = null;
-                currentImageFile = null;
-                
-                // Zapisz do Firebase
-                window.saveToFirebase();
-                
-                // Odśwież podgląd
-                const preview = document.getElementById('image-preview');
-                if (preview) {
-                    preview.style.display = 'none';
-                }
-                
-                showStatus('Obrazek usunięty', 'success');
-            } catch (error) {
-                console.error('Błąd usuwania obrazka:', error);
-                showStatus('Błąd usuwania obrazka: ' + error.message, 'error');
-            }
-        }
-
-        // Ukrycie modala
-        function hideModal() {
-            modalContainer.classList.add('hidden');
-            currentImageFile = null;
-            imageInput.value = '';
-            
-            // Zamknij kamerę jeśli jest otwarta
-            closeCamera();
-        }
-
-        // Zapisywanie sprzętu
-        async function saveEquipment() {
-            if (!checkPermission()) return;
-            
-            const inventoryNumber = document.getElementById('inventory-number-modal').value.trim();
-            const equipmentName = document.getElementById('equipment-name-modal').value.trim();
-            const manufacturer = document.getElementById('manufacturer-modal').value.trim();
-            const model = document.getElementById('model-modal').value.trim();
-            const serialNumber = document.getElementById('serial-number-modal').value.trim();
-            const calibrationDate = document.getElementById('calibration-date-modal').value;
-            const calibrationValidity = document.getElementById('calibration-validity-modal').value;
-            const location = document.getElementById('location-modal').value.trim();
-            const status = document.getElementById('status-modal').value;
-            const notes = document.getElementById('notes-modal').value.trim();
-            
-            // Walidacja
-            if (!inventoryNumber || !equipmentName || !manufacturer || !model || !serialNumber || !calibrationDate || !calibrationValidity || !location || !status) {
-                showStatus('Wypełnij wszystkie wymagane pola', 'error');
-                return;
-            }
-            
-            const validityDate = new Date(calibrationValidity);
-            const today = new Date();
-            const timeDiff = validityDate.getTime() - today.getTime();
-            const daysToExpiry = Math.ceil(timeDiff / (1000 * 3600 * 24));
-            
-            const equipmentData = {
-                id: currentEditingId || 'eq_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
-                inventoryNumber: inventoryNumber,
-                equipmentName: equipmentName,
-                manufacturer: manufacturer,
-                model: model,
-                serialNumber: serialNumber,
-                calibrationDate: calibrationDate,
-                calibrationValidity: calibrationValidity,
-                daysToExpiry: daysToExpiry,
-                notes: notes,
-                location: location,
-                status: status,
-                imageUrl: null
-            };
-            
-            const existingIndex = equipmentList.findIndex(item => item.id === equipmentData.id);
-            const existingEquipment = existingIndex !== -1 ? equipmentList[existingIndex] : null;
-            
-            // Zachowaj istniejący obrazek, jeśli nie dodajemy nowego
-            if (existingEquipment && existingEquipment.imageUrl && !currentImageFile) {
-                equipmentData.imageUrl = existingEquipment.imageUrl;
-            }
-            
-            // Przetwórz nowy obrazek jeśli został wybrany
-            if (currentImageFile) {
-                try {
-                    showStatus('Kompresowanie obrazka...', 'info');
-                    console.log('Kompresowanie obrazka dla:', equipmentData.id);
-                    
-                    // Kompresuj obrazek do Base64 (800x600, jakość 70%)
-                    const base64Image = await compressImageToBase64(currentImageFile, 800, 600, 0.7);
-                    
-                    // Sprawdź rozmiar Base64 (max ~500KB)
-                    if (base64Image.length > 500000) {
-                        showStatus('Obrazek jest zbyt duży, kompresuję bardziej...', 'info');
-                        // Jeszcze bardziej skompresuj
-                        const moreCompressed = await compressImageToBase64(currentImageFile, 400, 300, 0.5);
-                        equipmentData.imageUrl = moreCompressed;
-                        console.log('Obrazek ponownie skompresowany do 400x300');
-                    } else {
-                        equipmentData.imageUrl = base64Image;
-                        console.log('Obrazek skompresowany do Base64');
-                    }
-                    
-                } catch (error) {
-                    console.error('Błąd kompresji obrazka:', error);
-                    showStatus('Błąd kompresji obrazka: ' + error.message, 'error');
-                    return;
-                }
-            }
-            
-            if (existingIndex !== -1) {
-                equipmentList[existingIndex] = equipmentData;
-                showStatus('Zaktualizowano', 'success');
-            } else {
-                equipmentList.push(equipmentData);
-                showStatus('Dodano', 'success');
-            }
-            
-            // Zapis do Firebase
-            window.saveToFirebase();
-            
-            renderEquipmentList();
-            updateFilters();
-            hideModal();
-        }
-
-        // Aktualizacja filtrów
-        function updateFilters() {
-            const locations = [...new Set(equipmentList.map(item => item.location))].filter(Boolean);
-            
-            filterLocation.innerHTML = '<option value="">Wszystkie lokalizacje</option>';
-            locations.forEach(location => {
-                const option = document.createElement('option');
-                option.value = location;
-                option.textContent = location;
-                filterLocation.appendChild(option);
-            });
-        }
-
-        // Renderowanie listy sprzętu - POPRAWIONE (bez ikony aparatu)
-        function renderEquipmentList() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const locationFilter = filterLocation.value;
-            const statusFilter = filterStatus.value;
-            
-            let filteredList = equipmentList;
-            
-            if (searchTerm) {
-                filteredList = filteredList.filter(item => 
-                    item.inventoryNumber.toLowerCase().includes(searchTerm) ||
-                    item.equipmentName.toLowerCase().includes(searchTerm) ||
-                    item.manufacturer.toLowerCase().includes(searchTerm) ||
-                    item.model.toLowerCase().includes(searchTerm) ||
-                    item.serialNumber.toLowerCase().includes(searchTerm) ||
-                    (item.notes && item.notes.toLowerCase().includes(searchTerm)) ||
-                    item.location.toLowerCase().includes(searchTerm)
-                );
-            }
-            
-            if (locationFilter) {
-                filteredList = filteredList.filter(item => item.location === locationFilter);
-            }
-            
-            if (statusFilter) {
-                filteredList = filteredList.filter(item => item.status === statusFilter);
-            }
-            
-            // Sortowanie - aktywne z krótkim terminem na górze
-            filteredList.sort((a, b) => {
-                if (a.status === 'active' && b.status !== 'active') return -1;
-                if (a.status !== 'active' && b.status === 'active') return 1;
-                if (a.status === 'active' && b.status === 'active') {
-                    return a.daysToExpiry - b.daysToExpiry;
-                }
-                return 0;
-            });
-            
-            equipmentListDiv.innerHTML = '';
-            
-            if (filteredList.length === 0) {
-                equipmentListDiv.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📋</div>
-                        <div>Brak sprzętu</div>
-                        <div style="margin-top: 8px; font-size: 0.75rem; color: #adb5bd;">Kliknij + aby dodać nowy sprzęt</div>
-                    </div>
-                `;
-                return;
-            }
-            
-            filteredList.forEach(equipment => {
-                const item = document.createElement('div');
-                
-                let statusClass = '';
-                let daysClass = '';
-                let statusText = '';
-                
-                if (equipment.status !== 'active') {
-                    statusClass = equipment.status;
-                    statusText = getStatusText(equipment.status);
-                } else {
-                    if (equipment.daysToExpiry < 7) {
-                        statusClass = 'danger';
-                        daysClass = 'danger';
-                    } else if (equipment.daysToExpiry <= 30) {
-                        statusClass = 'warning';
-                        daysClass = 'warning';
-                    }
-                }
-                
-                const hasThumbnail = equipment.imageUrl && equipment.imageUrl.length > 0;
-                item.className = `equipment-item ${statusClass} ${hasThumbnail ? 'item-with-thumbnail' : ''}`;
-                item.onclick = (e) => {
-                    // Sprawdź czy kliknięto w status (dni) lub lokalizację
-                    if (e.target.classList.contains('item-status') || 
-                        (e.target.classList.contains('item-detail') && e.target.textContent === equipment.location)) {
-                        e.stopPropagation();
-                        return;
-                    }
-                    showEquipmentDetails(equipment.id);
-                };
-                
-                // POPRAWIONE: usunięto placeholder i ikonę aparatu
-                item.innerHTML = `
-                    ${hasThumbnail ? `
-                        <div class="thumbnail-container">
-                            <img src="${equipment.imageUrl}" alt="${equipment.equipmentName}" class="thumbnail">
-                        </div>
-                    ` : ''}
-                    
-                    <div class="item-number">${equipment.inventoryNumber}</div>
-                    <div class="item-name">${equipment.equipmentName}</div>
-                    <div class="item-details">
-                        <span class="item-detail">${equipment.manufacturer}</span>
-                        <span class="item-detail">${equipment.model}</span>
-                        <span class="item-detail" onclick="editEquipmentField('${equipment.id}', 'location')">${equipment.location}</span>
-                    </div>
-                    ${equipment.status === 'active' ? 
-                        `<div class="item-status status-days ${daysClass}" onclick="editEquipmentField('${equipment.id}', 'calibration-date')">${getDaysDisplay(equipment.daysToExpiry)}</div>` : 
-                        `<div class="item-status status-text ${equipment.status}">${statusText}</div>`
-                    }
-                `;
-                
-                equipmentListDiv.appendChild(item);
-            });
-        }
-
-        // Formatowanie wyświetlania dni
-        function getDaysDisplay(days) {
-            if (days < 0) {
-                return `+${Math.abs(days)}d`;
-            } else if (days === 0) {
-                return '0d';
-            } else {
-                return `${days}d`;
-            }
-        }
-
-        // Edycja konkretnego pola sprzętu
-        function editEquipmentField(id, field) {
-            if (!checkPermission()) return;
-            
-            const equipment = equipmentList.find(item => item.id === id);
-            if (equipment) {
-                currentEditingId = equipment.id;
-                currentImageFile = null;
-                showEquipmentForm('Edytuj sprzęt', equipment, field);
-            }
-        }
-
-        // Wyświetlanie szczegółów sprzętu w modal
-        function showEquipmentDetails(id) {
-            if (!currentUser) return;
-            
-            const equipment = equipmentList.find(item => item.id === id);
-            if (equipment) {
-                const isViewer = currentUser && currentUser.role === 'viewer';
-                
-                modalContainer.innerHTML = `
-                    <div class="modal-overlay">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <div class="modal-title">Szczegóły sprzętu</div>
-                                <button class="close-modal" onclick="hideModal()">×</button>
-                            </div>
-                            <div class="modal-body">
-                                ${!isViewer ? `
-                                <div class="modal-actions-top">
-                                    <button class="btn btn-danger" onclick="deleteEquipment('${equipment.id}')">Usuń</button>
-                                    <button class="btn" onclick="editEquipment('${equipment.id}')">Edytuj</button>
-                                </div>
-                                ` : ''}
-                                
-                                ${equipment.imageUrl ? `
-                                    <div style="text-align: center; margin-bottom: 20px;">
-                                        <img src="${equipment.imageUrl}" alt="${equipment.equipmentName}" 
-                                             style="max-width: 100%; max-height: 200px; border-radius: 8px; border: 1px solid #dee2e6;">
-                                    </div>
-                                ` : ''}
-                                
-                                <div class="detail-row">
-                                    <div class="detail-label">Numer ewidencyjny:</div>
-                                    <div class="detail-value">${equipment.inventoryNumber}</div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="detail-label">Nazwa sprzętu:</div>
-                                    <div class="detail-value">${equipment.equipmentName}</div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="detail-label">Producent:</div>
-                                    <div class="detail-value">${equipment.manufacturer}</div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="detail-label">Model:</div>
-                                    <div class="detail-value">${equipment.model}</div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="detail-label">Numer seryjny:</div>
-                                    <div class="detail-value">${equipment.serialNumber}</div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="detail-label">Data kalibracji:</div>
-                                    <div class="detail-value clickable" ${!isViewer ? `onclick="editEquipmentField('${equipment.id}', 'calibration-date')"` : ''}>${formatDate(equipment.calibrationDate)}</div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="detail-label">Ważność kalibracji:</div>
-                                    <div class="detail-value clickable" ${!isViewer ? `onclick="editEquipmentField('${equipment.id}', 'calibration-date')"` : ''}>${formatDate(equipment.calibrationValidity)}</div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="detail-label">Pozostało dni:</div>
-                                    <div class="detail-value clickable" ${!isViewer ? `onclick="editEquipmentField('${equipment.id}', 'calibration-date')"` : ''}>${getDaysDisplay(equipment.daysToExpiry)}</div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="detail-label">Lokalizacja:</div>
-                                    <div class="detail-value clickable" ${!isViewer ? `onclick="editEquipmentField('${equipment.id}', 'location')"` : ''}>${equipment.location}</div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="detail-label">Status:</div>
-                                    <div class="detail-value">${getStatusText(equipment.status)}</div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="detail-label">Uwagi:</div>
-                                    <div class="detail-value">${equipment.notes || 'Brak'}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                modalContainer.classList.remove('hidden');
-            }
-        }
-
-        // Pobieranie tekstu statusu
-        function getStatusText(status) {
-            const statusMap = {
-                'calibration': 'W kalibracji',
-                'unused': 'Nieużywany',
-                'lost': 'Zagubiony',
-                'damaged': 'Uszkodzony'
-            };
-            return statusMap[status] || status;
-        }
-
-        // Formatowanie daty
-        function formatDate(dateString) {
-            if (!dateString) return '';
-            const date = new Date(dateString);
-            return date.toLocaleDateString('pl-PL');
-        }
-
-        // Edycja sprzętu
-        function editEquipment(id) {
-            if (!checkPermission()) return;
-            
-            const equipment = equipmentList.find(item => item.id === id);
-            if (equipment) {
-                currentEditingId = equipment.id;
-                currentImageFile = null;
-                showEquipmentForm('Edytuj sprzęt', equipment);
-            }
-        }
-
-        // Usuwanie sprzętu
-        async function deleteEquipment(id) {
-            if (!checkPermission()) return;
-            
-            if (confirm('Usunąć ten sprzęt?')) {
-                equipmentList = equipmentList.filter(item => item.id !== id);
-                
-                // Zapisz do Firebase
-                window.saveToFirebase();
-                
-                hideModal();
-                showStatus('Usunięto', 'success');
-            }
-        }
-
-        // Wyświetlanie komunikatów statusu
-        function showStatus(message, type) {
-            statusMessage.textContent = message;
-            statusMessage.className = `status-message ${type}`;
-            statusMessage.style.display = 'block';
-            
-            setTimeout(() => {
-                statusMessage.style.display = 'none';
-            }, 3000);
-        }
-
-        // Udostępnienie funkcji globalnie
-        window.editEquipment = editEquipment;
-        window.editEquipmentField = editEquipmentField;
-        window.deleteEquipment = deleteEquipment;
-        window.deleteEquipmentImage = deleteEquipmentImage;
-        window.showEquipmentDetails = showEquipmentDetails;
-        window.hideModal = hideModal;
-        window.saveEquipment = saveEquipment;
-        window.openCamera = openCamera;
-        window.closeCamera = closeCamera;
-        window.switchCamera = switchCamera;
-        window.capturePhoto = capturePhoto;
-        window.logout = logout;
-    </script>
-
-    <!-- Firebase initialization - tylko Realtime Database, bez Storage -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, set, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
@@ -2546,178 +1162,383 @@
         const db = getDatabase(app);
         const equipmentRef = ref(db, "equipmentList");
         const lastUpdatedRef = ref(db, "lastUpdated");
+        const selectedItemsRef = ref(db, "selectedItems");
 
-        // Funkcja do aktualizacji daty w Firebase
-        window.updateLastUpdatedInFirebase = function () {
-            const now = new Date();
-            const formattedDate = now.toLocaleString('pl-PL', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            });
-            
-            set(lastUpdatedRef, {
-                timestamp: now.getTime(),
-                formatted: formattedDate
-            })
-            .then(() => {
-                console.log('Data ostatniej aktualizacji zapisana w Firebase');
-            })
-            .catch((error) => {
-                console.error('Błąd zapisu daty aktualizacji:', error);
-            });
-        };
+        window.equipmentList = [];
+        let currentUser = null;
+        let selectedItems = new Set();
 
-        // Nasłuchuj zmian daty w Firebase
-        onValue(lastUpdatedRef, (snapshot) => {
-            if (snapshot.exists()) {
-                const data = snapshot.val();
-                document.getElementById('last-updated-time').textContent = data.formatted;
-                console.log('Data zaktualizowana z Firebase:', data.formatted);
-            } else {
-                // Jeśli nie ma danych, ustaw bieżącą datę
-                updateLastUpdatedInFirebase();
+        const loginScreen = document.getElementById('login-screen');
+        const appContainer = document.getElementById('app-container');
+        const loginButton = document.getElementById('login-button');
+        const logoutButton = document.getElementById('logout-button');
+        const loginUsername = document.getElementById('login-username');
+        const loginPassword = document.getElementById('login-password');
+        const loginError = document.getElementById('login-error');
+        const currentUserSpan = document.getElementById('current-user');
+        const equipmentListDiv = document.getElementById('equipment-list');
+        const modalContainer = document.getElementById('modal-container');
+        const cameraContainer = document.getElementById('camera-container');
+        const searchInput = document.getElementById('search-input');
+        const statusMessage = document.getElementById('status-message');
+        const excelInput = document.getElementById('excel-input');
+        const imageInput = document.getElementById('image-input');
+        const addEquipmentBtn = document.getElementById('add-equipment');
+        const exportExcelBtn = document.getElementById('export-excel-btn');
+        const importExcelBtn = document.getElementById('import-excel-btn');
+        const clearAllBtn = document.getElementById('clear-all');
+        const filterLocation = document.getElementById('filter-location');
+        const filterStatus = document.getElementById('filter-status');
+        const lastUpdatedTime = document.getElementById('last-updated-time');
+
+        const authorizedUsers = [
+            { username: "t.ludwiczak", password: "samsung1", name: "t.ludwiczak", role: "admin" },
+            { username: "r.gehrke", password: "samsung2026", name: "r.gehrke", role: "admin" },
+            { username: "user", password: "samsung26", name: "user", role: "viewer" }
+        ];
+
+        function checkPermission() {
+            if (!currentUser) return false;
+            if (currentUser.role === 'viewer') {
+                showStatus('Brak uprawnień', 'error');
+                return false;
             }
+            return true;
+        }
+
+        function showStatus(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message ${type}`;
+            statusMessage.style.display = 'block';
+            setTimeout(() => { statusMessage.style.display = 'none'; }, 3000);
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('pl-PL');
+        }
+
+        function getStatusText(status) {
+            const map = { 'calibration': 'W kalibracji', 'unused': 'Nieużywany', 'lost': 'Zagubiony', 'damaged': 'Uszkodzony' };
+            return map[status] || status;
+        }
+
+        function getDaysDisplay(days) {
+            if (days < 0) return `+${Math.abs(days)}d`;
+            return days === 0 ? '0d' : `${days}d`;
+        }
+
+        async function toggleCheckbox(itemId) {
+            if (selectedItems.has(itemId)) {
+                selectedItems.delete(itemId);
+            } else {
+                selectedItems.add(itemId);
+            }
+            await set(selectedItemsRef, Array.from(selectedItems));
+            renderEquipmentList();
+        }
+
+        onValue(selectedItemsRef, (snapshot) => {
+            if (snapshot.exists()) {
+                selectedItems = new Set(snapshot.val());
+            } else {
+                selectedItems.clear();
+            }
+            renderEquipmentList();
         });
 
-        // 🔄 AUTO-SYNC (ODCZYT)
+        function renderEquipmentList() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const locationFilter = filterLocation.value;
+            const statusFilter = filterStatus.value;
+            
+            let filteredList = window.equipmentList.filter(item => {
+                if (searchTerm && !(`${item.inventoryNumber} ${item.equipmentName} ${item.manufacturer} ${item.model} ${item.serialNumber} ${item.notes || ''} ${item.location}`.toLowerCase().includes(searchTerm))) return false;
+                if (locationFilter && item.location !== locationFilter) return false;
+                if (statusFilter && item.status !== statusFilter) return false;
+                return true;
+            });
+            
+            filteredList.sort((a, b) => {
+                if (a.status === 'active' && b.status !== 'active') return -1;
+                if (a.status !== 'active' && b.status === 'active') return 1;
+                if (a.status === 'active' && b.status === 'active') return a.daysToExpiry - b.daysToExpiry;
+                return 0;
+            });
+            
+            equipmentListDiv.innerHTML = '';
+            if (filteredList.length === 0) {
+                equipmentListDiv.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📋</div><div>Brak sprzętu</div></div>`;
+                return;
+            }
+            
+            filteredList.forEach(equipment => {
+                const item = document.createElement('div');
+                let statusClass = '';
+                let daysClass = '';
+                if (equipment.status !== 'active') {
+                    statusClass = equipment.status;
+                } else {
+                    if (equipment.daysToExpiry < 7) statusClass = 'danger';
+                    else if (equipment.daysToExpiry <= 30) statusClass = 'warning';
+                }
+                const hasThumbnail = equipment.imageUrl && equipment.imageUrl.length > 0;
+                item.className = `equipment-item ${statusClass} ${hasThumbnail ? 'item-with-thumbnail' : ''}`;
+                item.onclick = (e) => { if (!e.target.closest('.item-checkbox') && !e.target.closest('.item-status')) showEquipmentDetails(equipment.id); };
+                
+                const isChecked = selectedItems.has(equipment.id);
+                
+                item.innerHTML = `
+                    ${hasThumbnail ? `<div class="thumbnail-container"><img src="${equipment.imageUrl}" class="thumbnail"></div>` : ''}
+                    <div class="item-number">${equipment.inventoryNumber}</div>
+                    <div class="item-name">${equipment.equipmentName}</div>
+                    <div class="item-details">
+                        <span class="item-detail">${equipment.manufacturer}</span>
+                        <span class="item-detail">${equipment.model}</span>
+                        <span class="item-detail" onclick="event.stopPropagation(); editEquipmentField('${equipment.id}', 'location')">${equipment.location}</span>
+                    </div>
+                    ${equipment.notes ? `<div class="item-notes">📝 ${equipment.notes.substring(0, 50)}${equipment.notes.length > 50 ? '...' : ''}</div>` : ''}
+                    ${equipment.status === 'active' ? 
+                        `<div class="item-status status-days ${daysClass}" onclick="event.stopPropagation(); editEquipmentField('${equipment.id}', 'calibration-date')">${getDaysDisplay(equipment.daysToExpiry)}</div>` : 
+                        `<div class="item-status status-text ${equipment.status}">${getStatusText(equipment.status)}</div>`
+                    }
+                    <div class="item-checkbox ${isChecked ? 'checked' : ''}" onclick="event.stopPropagation(); toggleCheckbox('${equipment.id}')"><input type="checkbox" ${isChecked ? 'checked' : ''}></div>
+                `;
+                equipmentListDiv.appendChild(item);
+            });
+        }
+
+        function showEquipmentDetails(id) {
+            const eq = window.equipmentList.find(i => i.id === id);
+            if (!eq) return;
+            modalContainer.innerHTML = `
+                <div class="modal-overlay"><div class="modal-content">
+                    <div class="modal-header"><div class="modal-title">Szczegóły</div><button class="close-modal" onclick="hideModal()">×</button></div>
+                    <div class="modal-body">
+                        ${currentUser?.role !== 'viewer' ? `<div class="modal-actions-top"><button class="btn btn-danger" onclick="deleteEquipment('${eq.id}')">Usuń</button><button class="btn" onclick="editEquipment('${eq.id}')">Edytuj</button></div>` : ''}
+                        ${eq.imageUrl ? `<div style="text-align:center;margin-bottom:20px;"><img src="${eq.imageUrl}" style="max-width:100%;max-height:200px;border-radius:8px;"></div>` : ''}
+                        <div class="detail-row"><div class="detail-label">Numer:</div><div class="detail-value">${eq.inventoryNumber}</div></div>
+                        <div class="detail-row"><div class="detail-label">Nazwa:</div><div class="detail-value">${eq.equipmentName}</div></div>
+                        <div class="detail-row"><div class="detail-label">Producent:</div><div class="detail-value">${eq.manufacturer}</div></div>
+                        <div class="detail-row"><div class="detail-label">Model:</div><div class="detail-value">${eq.model}</div></div>
+                        <div class="detail-row"><div class="detail-label">Seryjny:</div><div class="detail-value">${eq.serialNumber}</div></div>
+                        <div class="detail-row"><div class="detail-label">Kalibracja:</div><div class="detail-value">${formatDate(eq.calibrationDate)}</div></div>
+                        <div class="detail-row"><div class="detail-label">Ważność:</div><div class="detail-value">${formatDate(eq.calibrationValidity)}</div></div>
+                        <div class="detail-row"><div class="detail-label">Dni:</div><div class="detail-value">${getDaysDisplay(eq.daysToExpiry)}</div></div>
+                        <div class="detail-row"><div class="detail-label">Lokalizacja:</div><div class="detail-value">${eq.location}</div></div>
+                        <div class="detail-row"><div class="detail-label">Status:</div><div class="detail-value">${getStatusText(eq.status)}</div></div>
+                        <div class="detail-row"><div class="detail-label">Uwagi:</div><div class="detail-value">${eq.notes || 'Brak'}</div></div>
+                    </div>
+                </div></div>
+            `;
+            modalContainer.classList.remove('hidden');
+        }
+
+        window.hideModal = () => { modalContainer.classList.add('hidden'); };
+        window.toggleCheckbox = toggleCheckbox;
+        window.editEquipmentField = (id, field) => { if(checkPermission()) showEquipmentForm('Edytuj', window.equipmentList.find(i=>i.id===id), field); };
+        window.editEquipment = (id) => { if(checkPermission()) showEquipmentForm('Edytuj', window.equipmentList.find(i=>i.id===id)); };
+        window.deleteEquipment = async (id) => { if(checkPermission() && confirm('Usunąć?')) { window.equipmentList = window.equipmentList.filter(i=>i.id!==id); await saveToFirebase(); hideModal(); showStatus('Usunięto','success'); } };
+        
+        function updateFilters() {
+            const locations = [...new Set(window.equipmentList.map(i=>i.location).filter(Boolean))];
+            filterLocation.innerHTML = '<option value="">Wszystkie lokalizacje</option>';
+            locations.forEach(loc => { const opt = document.createElement('option'); opt.value = loc; opt.textContent = loc; filterLocation.appendChild(opt); });
+        }
+
+        window.saveToFirebase = async function() {
+            await set(equipmentRef, window.equipmentList);
+            const now = new Date();
+            await set(lastUpdatedRef, { timestamp: now.getTime(), formatted: now.toLocaleString('pl-PL') });
+        };
+
         onValue(equipmentRef, (snapshot) => {
             if (snapshot.exists()) {
                 const data = snapshot.val();
-                console.log("Dane z Firebase (surowy obiekt):", data);
-                
-                // Konwertuj obiekt na tablicę jeśli potrzebne
-                if (Array.isArray(data)) {
-                    equipmentList = data;
-                } else if (data && typeof data === 'object') {
-                    equipmentList = Object.values(data);
-                } else {
-                    equipmentList = [];
-                }
-                
-                console.log("Przekonwertowana tablica:", equipmentList.length, "elementów");
-                
-                // Aktualizacja dni do wygaśnięcia dla załadowanych danych
-                equipmentList.forEach(item => {
+                window.equipmentList = Array.isArray(data) ? data : Object.values(data);
+                window.equipmentList.forEach(item => {
                     if (item.calibrationValidity) {
-                        const validityDate = new Date(item.calibrationValidity);
+                        const validity = new Date(item.calibrationValidity);
                         const today = new Date();
-                        today.setHours(0, 0, 0, 0);
-                        validityDate.setHours(0, 0, 0, 0);
-                        const timeDiff = validityDate.getTime() - today.getTime();
-                        item.daysToExpiry = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                        today.setHours(0,0,0,0);
+                        validity.setHours(0,0,0,0);
+                        item.daysToExpiry = Math.ceil((validity - today) / (1000*3600*24));
                     }
                 });
-                
                 renderEquipmentList();
                 updateFilters();
-                console.log('Dane załadowane z Firebase:', equipmentList.length, 'pozycji');
             } else {
-                equipmentList = [];
+                window.equipmentList = [];
                 renderEquipmentList();
-                console.log('Brak danych w Firebase');
             }
         });
 
-        // 💾 ZAPIS do Firebase
-        window.saveToFirebase = function () {
-            const dataToSave = Array.isArray(equipmentList) ? equipmentList : [];
-            console.log("Zapisywanie danych do Firebase:", dataToSave.length, "elementów");
-            
-            // Najpierw zapisz dane sprzętu
-            set(equipmentRef, dataToSave)
-                .then(() => {
-                    console.log('Dane sprzętu zapisane w Firebase');
-                    // Następnie zaktualizuj datę ostatniej modyfikacji
-                    return window.updateLastUpdatedInFirebase();
-                })
-                .then(() => {
-                    console.log('Data aktualizacji zaktualizowana');
-                })
-                .catch((error) => {
-                    console.error('Błąd zapisu do Firebase:', error);
-                    showStatus('Błąd zapisu do Firebase: ' + error.message, 'error');
-                });
-        };
+        onValue(lastUpdatedRef, (snapshot) => {
+            if (snapshot.exists()) lastUpdatedTime.textContent = snapshot.val().formatted;
+            else saveToFirebase();
+        });
 
-        // ❌ USUWANIE z Firebase
-        window.clearFirebase = function () {
-            // Usuń wszystkie dane sprzętu
-            remove(equipmentRef)
-                .then(() => {
-                    equipmentList = [];
-                    renderEquipmentList();
-                    updateFilters();
-                    // Zaktualizuj datę ostatniej modyfikacji
-                    return window.updateLastUpdatedInFirebase();
-                })
-                .then(() => {
-                    showStatus('Wszystkie dane zostały usunięte', 'success');
-                })
-                .catch((error) => {
-                    console.error('Błąd usuwania z Firebase:', error);
-                    showStatus('Błąd usuwania z Firebase: ' + error.message, 'error');
-                });
-        };
+        function loginUser(user) {
+            currentUser = user;
+            currentUserSpan.textContent = `Witaj, ${user.name}`;
+            loginScreen.classList.add('hidden');
+            appContainer.classList.remove('hidden');
+            localStorage.setItem('calibra_user', JSON.stringify(user));
+            if (user.role === 'viewer') {
+                addEquipmentBtn.style.display = 'none';
+                clearAllBtn.style.display = 'none';
+            } else {
+                addEquipmentBtn.style.display = 'flex';
+                clearAllBtn.style.display = 'block';
+            }
+        }
 
-        // Funkcja do kompresji obrazka do Base64 - eksportowana globalnie
-        window.uploadImageToFirebase = async function(equipmentId) {
-            return new Promise((resolve, reject) => {
-                if (!currentImageFile) {
-                    resolve(null);
-                    return;
+        function logout() { if(confirm('Wylogować?')) { currentUser=null; localStorage.removeItem('calibra_user'); loginScreen.classList.remove('hidden'); appContainer.classList.add('hidden'); } }
+
+        loginButton.onclick = () => {
+            const user = authorizedUsers.find(u=>u.username===loginUsername.value.trim() && u.password===loginPassword.value.trim());
+            if(user) loginUser(user);
+            else { loginError.textContent='Nieprawidłowe dane'; loginError.style.display='block'; }
+        };
+        logoutButton.onclick = logout;
+        addEquipmentBtn.onclick = () => { if(checkPermission()) showEquipmentForm('Dodaj nowy sprzęt'); };
+        exportExcelBtn.onclick = () => exportToExcel();
+        importExcelBtn.onclick = () => { if(checkPermission()) excelInput.click(); };
+        clearAllBtn.onclick = () => { if(checkPermission() && confirm('Usunąć WSZYSTKIE dane?')) remove(equipmentRef).then(()=>{window.equipmentList=[];renderEquipmentList();saveToFirebase();}); };
+        searchInput.oninput = () => renderEquipmentList();
+        filterLocation.onchange = () => renderEquipmentList();
+        filterStatus.onchange = () => renderEquipmentList();
+        
+        function exportToExcel() {
+            if(window.equipmentList.length===0) { showStatus('Brak danych','error'); return; }
+            const data = window.equipmentList.map(i=>({
+                'Numer ewidencyjny': i.inventoryNumber, 'Nazwa sprzętu': i.equipmentName, 'Producent': i.manufacturer,
+                'Model': i.model, 'Numer seryjny': i.serialNumber, 'Data kalibracji': i.calibrationDate,
+                'Ważność kalibracji': i.calibrationValidity, 'Lokalizacja': i.location, 'Status': getStatusText(i.status),
+                'Uwagi': i.notes || ''
+            }));
+            const ws = XLSX.utils.json_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Sprzęt');
+            XLSX.writeFile(wb, `calibra_export_${new Date().toISOString().split('T')[0]}.xlsx`);
+            showStatus('Eksport zakończony','success');
+        }
+        
+        excelInput.onchange = async (e) => {
+            const file = e.target.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                const data = new Uint8Array(ev.target.result);
+                const workbook = XLSX.read(data, {type:'array'});
+                const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                const json = XLSX.utils.sheet_to_json(sheet);
+                const imported = json.map(row => ({
+                    id: 'eq_' + Date.now() + '_' + Math.random().toString(36).substr(2,6),
+                    inventoryNumber: row['Numer ewidencyjny'] || '',
+                    equipmentName: row['Nazwa sprzętu'] || '',
+                    manufacturer: row['Producent'] || '',
+                    model: row['Model'] || '',
+                    serialNumber: row['Numer seryjny'] || '',
+                    calibrationDate: row['Data kalibracji'] || new Date().toISOString().split('T')[0],
+                    calibrationValidity: row['Ważność kalibracji'] || '',
+                    location: row['Lokalizacja'] || '',
+                    status: 'active',
+                    notes: row['Uwagi'] || '',
+                    imageUrl: null,
+                    daysToExpiry: 0
+                })).filter(i=>i.inventoryNumber && i.equipmentName);
+                if(imported.length) {
+                    if(confirm(`Dodać ${imported.length} pozycji?`)) window.equipmentList.push(...imported);
+                    else window.equipmentList = imported;
+                    saveToFirebase();
+                    showStatus(`Zaimportowano ${imported.length} pozycji`,'success');
                 }
-                
+            };
+            reader.readAsArrayBuffer(file);
+            excelInput.value = '';
+        };
+        
+        let currentImageFile=null, currentEditingId=null, cameraStream=null, useFrontCamera=false;
+        function compressImageToBase64(file, maxW, maxH, quality) {
+            return new Promise((resolve) => {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = (e) => {
                     const img = new Image();
-                    img.onload = function() {
+                    img.onload = () => {
                         const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-                        
-                        // Kompresja - maksymalne wymiary 800x600
-                        let width = img.width;
-                        let height = img.height;
-                        const maxWidth = 800;
-                        const maxHeight = 600;
-                        
-                        if (width > height) {
-                            if (width > maxWidth) {
-                                height = Math.round((height * maxWidth) / width);
-                                width = maxWidth;
-                            }
-                        } else {
-                            if (height > maxHeight) {
-                                width = Math.round((width * maxHeight) / height);
-                                height = maxHeight;
-                            }
-                        }
-                        
-                        canvas.width = width;
-                        canvas.height = height;
-                        ctx.drawImage(img, 0, 0, width, height);
-                        
-                        // Konwersja do base64 z jakością 70%
-                        const base64 = canvas.toDataURL('image/jpeg', 0.7);
-                        console.log('Obrazek skompresowany do Base64, rozmiar:', Math.round(base64.length / 1024), 'KB');
-                        resolve(base64);
+                        let w=img.width, h=img.height;
+                        if(w>h) { if(w>maxW) { h=(h*maxW)/w; w=maxW; } }
+                        else { if(h>maxH) { w=(w*maxH)/h; h=maxH; } }
+                        canvas.width=w; canvas.height=h;
+                        canvas.getContext('2d').drawImage(img,0,0,w,h);
+                        resolve(canvas.toDataURL('image/jpeg', quality));
                     };
-                    img.onerror = reject;
                     img.src = e.target.result;
                 };
-                reader.onerror = reject;
-                reader.readAsDataURL(currentImageFile);
+                reader.readAsDataURL(file);
             });
+        }
+        
+        window.showEquipmentForm = async (title, equipment=null, focusField=null) => {
+            const today = new Date().toISOString().split('T')[0];
+            const nextYear = new Date(); nextYear.setFullYear(nextYear.getFullYear()+1);
+            modalContainer.innerHTML = `
+                <div class="modal-overlay"><div class="modal-content">
+                    <div class="modal-header"><div class="modal-title">${title}</div><button class="close-modal" onclick="hideModal()">×</button></div>
+                    <div class="modal-body">
+                        <form id="eq-form" onsubmit="event.preventDefault(); saveEquipment();">
+                            <div class="form-group"><label>Numer ewidencyjny</label><input id="inv-num" required value="${equipment?.inventoryNumber || 'BCH8-OQCREF-'}"></div>
+                            <div class="form-group"><label>Nazwa sprzętu</label><input id="eq-name" required value="${equipment?.equipmentName || ''}"></div>
+                            <div class="form-row"><div class="form-group"><label>Producent</label><input id="manuf" required value="${equipment?.manufacturer || ''}"></div>
+                            <div class="form-group"><label>Model</label><input id="model" required value="${equipment?.model || ''}"></div></div>
+                            <div class="form-group"><label>Numer seryjny</label><input id="serial" required value="${equipment?.serialNumber || ''}"></div>
+                            <div class="form-row"><div class="form-group"><label>Data kalibracji</label><input type="date" id="cal-date" required value="${equipment?.calibrationDate || today}"></div>
+                            <div class="form-group"><label>Ważność kalibracji</label><input type="date" id="cal-valid" required value="${equipment?.calibrationValidity || nextYear.toISOString().split('T')[0]}"></div></div>
+                            <div class="form-row"><div class="form-group"><label>Lokalizacja</label><input id="loc" required value="${equipment?.location || ''}"></div>
+                            <div class="form-group"><label>Status</label><select id="stat"><option value="active">Aktywny</option><option value="calibration">W kalibracji</option><option value="unused">Nieużywany</option><option value="lost">Zagubiony</option><option value="damaged">Uszkodzony</option></select></div></div>
+                            <div class="form-group"><label>Uwagi</label><textarea id="notes" rows="2">${equipment?.notes || ''}</textarea></div>
+                            <div class="modal-actions"><button type="button" class="btn" onclick="hideModal()">Anuluj</button><button type="submit" class="btn btn-success">Zapisz</button></div>
+                        </form>
+                    </div>
+                </div></div>`;
+            if(equipment) document.getElementById('stat').value = equipment.status;
+            modalContainer.classList.remove('hidden');
+            if(focusField==='calibration-date') document.getElementById('cal-date').focus();
+            else if(focusField==='location') document.getElementById('loc').focus();
+            else document.getElementById('inv-num').focus();
+            currentEditingId = equipment?.id || null;
+            currentImageFile = null;
         };
-
-        // Funkcja do "usuwania obrazków" - dla Base64 nie ma nic do usunięcia
-        window.deleteImageFromFirebase = async function(imageUrl) {
-            console.log('Obrazek jest Base64 w bazie danych - nie wymaga usuwania z Storage');
-            return true;
+        
+        window.saveEquipment = async () => {
+            const invNum = document.getElementById('inv-num').value.trim();
+            const eqName = document.getElementById('eq-name').value.trim();
+            const manuf = document.getElementById('manuf').value.trim();
+            const model = document.getElementById('model').value.trim();
+            const serial = document.getElementById('serial').value.trim();
+            const calDate = document.getElementById('cal-date').value;
+            const calValid = document.getElementById('cal-valid').value;
+            const loc = document.getElementById('loc').value.trim();
+            const status = document.getElementById('stat').value;
+            const notes = document.getElementById('notes').value.trim();
+            if(!invNum||!eqName||!manuf||!model||!serial||!calDate||!calValid||!loc) { showStatus('Wypełnij wszystkie pola','error'); return; }
+            const validDate = new Date(calValid);
+            const today = new Date();
+            const days = Math.ceil((validDate - today)/(1000*3600*24));
+            const newEq = { id: currentEditingId || 'eq_'+Date.now()+'_'+Math.random().toString(36).substr(2,6), inventoryNumber: invNum, equipmentName: eqName, manufacturer: manuf, model, serialNumber: serial, calibrationDate: calDate, calibrationValidity: calValid, daysToExpiry: days, notes, location: loc, status, imageUrl: null };
+            const idx = window.equipmentList.findIndex(i=>i.id===newEq.id);
+            if(idx!==-1) window.equipmentList[idx]=newEq;
+            else window.equipmentList.push(newEq);
+            await saveToFirebase();
+            hideModal();
+            showStatus('Zapisano','success');
         };
+        
+        const savedUser = localStorage.getItem('calibra_user');
+        if(savedUser) loginUser(JSON.parse(savedUser));
+        window.logout = logout;
     </script>
 </body>
 </html>
